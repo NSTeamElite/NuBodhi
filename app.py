@@ -115,7 +115,7 @@ def main():
 
         **NuBodhi is about better food, better sleep, better movement, and better supplements for a better you!**
         """) 
-                 caption="Begin your wellness journey")
+                caption="Begin your wellness journey")
 
         st.write("### Let's Begin Your Journey!")
         st.write("Please share some basic information to personalize your experience.")
