@@ -11,9 +11,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load custom CSS
-with open('assets/style.css') as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+# Remove or fix the CSS reference (since assets/style.css doesn’t exist)
+# Option 1: Remove it (simplest for now)
+# If you want styling later, create assets/style.css in GitHub
+# For now, comment it out:
+# with open('assets/style.css') as f:
+#     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Initialize session state
 def initialize_session_state():
@@ -88,8 +91,6 @@ def main():
         # Welcome message and philosophy
         st.markdown("""
         ## Welcome to NuBodhi - Your Holistic Transformation Journey! 🌟
-               # Welcome message with Indian healthy food image
-        st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0")
         Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
         guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
         skipping sleep, and never tracking your progress.
@@ -114,6 +115,8 @@ def main():
 
         **NuBodhi is about better food, better sleep, better movement, and better supplements for a better you!**
         """)
+        # Add the image outside the markdown (fixing the syntax error)
+        st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0", caption="Begin your journey")
         st.write("### Let's Begin Your Journey!")
         st.write("Please share some basic information to personalize your experience.")
 
@@ -190,7 +193,7 @@ def main():
             if metrics_type == "Progress Photos":
                 st.markdown("""
                 ### Progress Photo Instructions
-                Take photos in well-lit room wearing fitted clothing:
+                Take photos in a well-lit room wearing fitted clothing:
                 1. 📸 **Front View**: Stand straight, arms slightly away from body
                 2. 📸 **Side View**: Stand sideways, natural posture
                 3. 📸 **Back View**: Stand straight, arms slightly away from body
@@ -340,13 +343,6 @@ def main():
                         }
                     })
                     st.success("Body composition data saved!")
-
-
-        # Motivational Quote
-        st.markdown("""
-        > "Yoga is the journey of the self, through the self, to the self." 
-        > - The Bhagavad Gita
-        """)
 
 if __name__ == "__main__":
     main()
