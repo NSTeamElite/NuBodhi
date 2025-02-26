@@ -76,7 +76,7 @@ def calculate_calories(age, gender, weight, height, activity_level):
     activity_multipliers = {"Sedentary": 1.2, "Lightly Active": 1.375, "Moderately Active": 1.55, "Very Active": 1.725}
     return round(bmr * activity_multipliers[activity_level])
 
-# Extended Meal Plans with Details
+# Extended Meal Plans with Verified Links
 vegetarian_meals = {
     "Monday": {
         "Breakfast": {
@@ -92,7 +92,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Dal Tadka with Jeera Rice",
             "Ingredients": ["1 cup red lentils", "2 tbsp ghee", "1 tsp cumin seeds", "1/2 tsp turmeric", "2 garlic cloves", "1 cup rice"],
-            "Recipe": "Boil lentils with turmeric, fry cumin and garlic in ghee, mix. Cook rice with ghee and cumin. [Video](https://www.youtube.com/watch?v=8j0W6v2R5sQ)"
+            "Recipe": "Boil lentils with turmeric, fry cumin and garlic in ghee, mix. Cook rice with ghee and cumin. [Full Recipe](https://www.vegrecipesofindia.com/dal-tadka-recipe/)"
         },
         "Snack": {
             "Meal": "Roasted Makhana",
@@ -104,7 +104,7 @@ vegetarian_meals = {
         "Breakfast": {
             "Meal": "Stuffed Paratha",
             "Ingredients": ["2 cups whole wheat flour", "2 boiled potatoes (mashed)", "1 tbsp ghee", "1 tsp cumin"],
-            "Recipe": "Knead dough, stuff with mashed potatoes and cumin, cook with ghee. [Recipe](https://www.indianhealthyrecipes.com/aloo-paratha/)"
+            "Recipe": "Knead dough, stuff with mashed potatoes and cumin, cook with ghee. [Full Recipe](https://www.indianhealthyrecipes.com/aloo-paratha/)"
         },
         "Lunch": {
             "Meal": "Dal with Leftover Rice",
@@ -114,7 +114,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Palak Paneer with Roti",
             "Ingredients": ["2 cups spinach", "200g paneer", "2 tbsp ghee", "1 tsp garlic", "1 tsp ginger", "1 cup whole wheat flour"],
-            "Recipe": "Blend spinach, cook with ghee, garlic, ginger, add paneer. Make roti with flour and ghee. [Video](https://www.youtube.com/watch?v=6POqXbR5w9A)"
+            "Recipe": "Blend spinach, cook with ghee, garlic, ginger, add paneer. Make roti with flour and ghee. [Full Recipe](https://www.indianhealthyrecipes.com/palak-paneer-recipe/)"
         },
         "Snack": {
             "Meal": "Roasted Peanuts",
@@ -126,17 +126,17 @@ vegetarian_meals = {
         "Breakfast": {
             "Meal": "Poha",
             "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric", "1/4 cup peanuts"],
-            "Recipe": "Soak rice, heat ghee, add mustard seeds, turmeric, peanuts, mix. [Recipe](https://www.vegrecipesofindia.com/poha-recipe/)"
+            "Recipe": "Soak rice, heat ghee, add mustard seeds, turmeric, peanuts, mix. [Full Recipe](https://www.vegrecipesofindia.com/poha-recipe/)"
         },
         "Lunch": {
             "Meal": "Aloo Gobi with Roti",
             "Ingredients": ["2 potatoes", "1 cauliflower", "2 tbsp ghee", "1 tsp cumin", "1 cup whole wheat flour"],
-            "Recipe": "Cook potatoes and cauliflower with ghee and cumin. Make roti with flour. [Video](https://www.youtube.com/watch?v=7z1i-cxQ6i0)"
+            "Recipe": "Cook potatoes and cauliflower with ghee and cumin. Make roti with flour. [Full Recipe](https://www.indianhealthyrecipes.com/aloo-gobi-recipe/)"
         },
         "Dinner": {
             "Meal": "Chana Masala with Rice",
             "Ingredients": ["1 cup chickpeas", "2 tbsp ghee", "2 tomatoes", "1 tsp garam masala", "1 cup rice"],
-            "Recipe": "Soak chickpeas, cook with ghee, tomatoes, spices. Serve with rice. [Recipe](https://www.cookwithmanali.com/chana-masala/)"
+            "Recipe": "Soak chickpeas, cook with ghee, tomatoes, spices. Serve with rice. [Full Recipe](https://www.cookwithmanali.com/chana-masala/)"
         },
         "Snack": {
             "Meal": "Roasted Makhana",
@@ -158,7 +158,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Rajma with Jeera Rice",
             "Ingredients": ["1 cup kidney beans", "2 tbsp ghee", "1 tsp cumin", "1 cup rice"],
-            "Recipe": "Cook beans with ghee and spices, serve with cumin rice. [Video](https://www.youtube.com/watch?v=8j0W6v2R5sQ)"
+            "Recipe": "Cook beans with ghee and spices, serve with cumin rice. [Full Recipe](https://www.indianhealthyrecipes.com/rajma-masala/)"
         },
         "Snack": {
             "Meal": "Cucumber Slices with Chaat Masala",
@@ -170,7 +170,7 @@ vegetarian_meals = {
         "Breakfast": {
             "Meal": "Vegetable Upma",
             "Ingredients": ["1 cup semolina", "1 tbsp ghee", "1/4 cup mixed veggies (carrot, peas)"],
-            "Recipe": "Roast semolina, add ghee, veggies, cook 15 mins. [Recipe](https://www.vegrecipesofindia.com/upma-recipe/)"
+            "Recipe": "Roast semolina, add ghee, veggies, cook 15 mins. [Full Recipe](https://www.vegrecipesofindia.com/upma-recipe/)"
         },
         "Lunch": {
             "Meal": "Aloo Gobi with Roti",
@@ -180,7 +180,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Baingan Bharta with Roti",
             "Ingredients": ["1 large eggplant", "2 tbsp ghee", "2 tomatoes", "1 cup whole wheat flour"],
-            "Recipe": "Roast eggplant, mash with ghee and tomatoes. Make roti. [Video](https://www.youtube.com/watch?v=5qpn2Eno5fc)"
+            "Recipe": "Roast eggplant, mash with ghee and tomatoes. Make roti. [Full Recipe](https://www.indianhealthyrecipes.com/baingan-bharta-recipe/)"
         },
         "Snack": {
             "Meal": "Roasted Peanuts",
@@ -202,7 +202,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Mixed Veg Curry with Roti",
             "Ingredients": ["1 cup mixed veggies", "2 tbsp ghee", "1 tsp spices", "1 cup whole wheat flour"],
-            "Recipe": "Cook veggies with ghee and spices, make roti. [Recipe](https://www.indianhealthyrecipes.com/mixed-vegetable-curry/)"
+            "Recipe": "Cook veggies with ghee and spices, make roti. [Full Recipe](https://www.indianhealthyrecipes.com/mixed-vegetable-curry/)"
         },
         "Snack": {
             "Meal": "Roasted Makhana",
@@ -214,7 +214,7 @@ vegetarian_meals = {
         "Breakfast": {
             "Meal": "Poha",
             "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric"],
-            "Recipe": "Soak rice, cook with ghee, mustard, turmeric. [Recipe](https://www.vegrecipesofindia.com/poha-recipe/)"
+            "Recipe": "Soak rice, cook with ghee, mustard, turmeric. [Full Recipe](https://www.vegrecipesofindia.com/poha-recipe/)"
         },
         "Lunch": {
             "Meal": "Mixed Veg Curry with Rice",
@@ -224,7 +224,7 @@ vegetarian_meals = {
         "Dinner": {
             "Meal": "Paneer Tikka with Sautéed Spinach",
             "Ingredients": ["200g paneer", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach", "1 tsp spices"],
-            "Recipe": "Marinate paneer with yogurt, cook in ghee, sauté spinach. [Video](https://www.youtube.com/watch?v=9x6M1j2f1oQ)"
+            "Recipe": "Marinate paneer with yogurt, cook in ghee, sauté spinach. [Full Recipe](https://www.indianhealthyrecipes.com/paneer-tikka-recipe/)"
         },
         "Snack": {
             "Meal": "Cucumber Slices",
@@ -239,22 +239,22 @@ meat_meals = {
         "Breakfast": {
             "Meal": "Chicken Masala Omelette",
             "Ingredients": ["2 eggs", "100g shredded chicken", "1 tbsp ghee", "1/2 tsp turmeric"],
-            "Recipe": "Mix eggs, chicken, spices, cook in ghee. [Recipe](https://www.indianhealthyrecipes.com/chicken-omelette/)"
+            "Recipe": "Mix eggs, chicken, spices, cook in ghee. [Full Recipe](https://www.indianhealthyrecipes.com/chicken-omelette/)"
         },
         "Lunch": {
             "Meal": "Chicken Curry with Cauliflower Rice",
             "Ingredients": ["200g chicken", "1 tbsp coconut oil", "1 tsp garlic", "1 cup cauliflower"],
-            "Recipe": "Cook chicken with spices and oil, sauté cauliflower. [Video](https://www.youtube.com/watch?v=7z1i-cxQ6i0)"
+            "Recipe": "Cook chicken with spices and oil, sauté cauliflower. [Full Recipe](https://www.indianhealthyrecipes.com/chicken-curry/)"
         },
         "Dinner": {
             "Meal": "Mutton Keema with Roti",
             "Ingredients": ["200g mutton mince", "2 tbsp ghee", "1 tsp garlic", "1 cup whole wheat flour"],
-            "Recipe": "Cook mince with ghee and spices, make roti. [Recipe](https://www.cookwithmanali.com/mutton-keema/)"
+            "Recipe": "Cook mince with ghee and spices, make roti. [Full Recipe](https://www.cookwithmanali.com/mutton-keema/)"
         },
         "Snack": {
             "Meal": "Tandoori Chicken Bites",
             "Ingredients": ["200g chicken", "1 tbsp yogurt", "1 tbsp ghee", "1 tsp tandoori spices"],
-            "Recipe": "Marinate, cook in ghee or oven. [Video](https://www.youtube.com/watch?v=5qpn2Eno5fc)"
+            "Recipe": "Marinate, cook in ghee or oven."
         }
     },
     "Tuesday": {
@@ -271,7 +271,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Palak Chicken with Roti",
             "Ingredients": ["Leftover chicken", "2 cups spinach", "2 tbsp ghee", "1 cup whole wheat flour"],
-            "Recipe": "Cook spinach with ghee, add chicken, make roti. [Recipe](https://www.indianhealthyrecipes.com/palak-chicken/)"
+            "Recipe": "Cook spinach with ghee, add chicken, make roti. [Full Recipe](https://www.indianhealthyrecipes.com/palak-chicken/)"
         },
         "Snack": {
             "Meal": "Roasted Almonds",
@@ -293,7 +293,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Chicken Tikka with Sautéed Greens",
             "Ingredients": ["200g chicken", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"],
-            "Recipe": "Marinate chicken, cook in ghee, sauté greens. [Video](https://www.youtube.com/watch?v=9x6M1j2f1oQ)"
+            "Recipe": "Marinate chicken, cook in ghee, sauté greens. [Full Recipe](https://www.indianhealthyrecipes.com/chicken-tikka/)"
         },
         "Snack": {
             "Meal": "Tandoori Bites",
@@ -315,7 +315,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Fish Curry with Cauliflower Rice",
             "Ingredients": ["200g fish", "1 tbsp coconut oil", "1 cup cauliflower", "1 tsp turmeric"],
-            "Recipe": "Cook fish with oil and spices, sauté cauliflower. [Recipe](https://www.vegrecipesofindia.com/fish-curry-recipe/)"
+            "Recipe": "Cook fish with oil and spices, sauté cauliflower. [Full Recipe](https://www.indianhealthyrecipes.com/fish-curry-recipe/)"
         },
         "Snack": {
             "Meal": "Roasted Almonds",
@@ -337,7 +337,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Mutton Rogan Josh with Greens",
             "Ingredients": ["200g mutton", "2 tbsp ghee", "1 tbsp yogurt", "2 cups methi"],
-            "Recipe": "Cook mutton with ghee and yogurt, sauté greens. [Video](https://www.youtube.com/watch?v=5qpn2Eno5fc)"
+            "Recipe": "Cook mutton with ghee and yogurt, sauté greens. [Full Recipe](https://www.cookwithmanali.com/rogan-josh/)"
         },
         "Snack": {
             "Meal": "Tandoori Bites",
@@ -359,7 +359,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Butter Chicken with Rice",
             "Ingredients": ["200g chicken", "2 tbsp ghee", "1 cup cream", "1 cup rice"],
-            "Recipe": "Cook chicken with ghee and cream, serve with rice. [Recipe](https://www.cookwithmanali.com/butter-chicken/)"
+            "Recipe": "Cook chicken with ghee and cream, serve with rice. [Full Recipe](https://www.cookwithmanali.com/butter-chicken/)"
         },
         "Snack": {
             "Meal": "Roasted Almonds",
@@ -371,7 +371,7 @@ meat_meals = {
         "Breakfast": {
             "Meal": "Chicken Masala Omelette",
             "Ingredients": ["2 eggs", "100g chicken", "1 tbsp ghee", "1/2 tsp turmeric"],
-            "Recipe": "Mix eggs, chicken, spices, cook in ghee. [Recipe](https://www.indianhealthyrecipes.com/chicken-omelette/)"
+            "Recipe": "Mix eggs, chicken, spices, cook in ghee. [Full Recipe](https://www.indianhealthyrecipes.com/chicken-omelette/)"
         },
         "Lunch": {
             "Meal": "Mutton Rogan Josh with Roti",
@@ -381,7 +381,7 @@ meat_meals = {
         "Dinner": {
             "Meal": "Fish Tikka with Sautéed Spinach",
             "Ingredients": ["200g fish", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"],
-            "Recipe": "Marinate fish, cook in ghee, sauté spinach. [Video](https://www.youtube.com/watch?v=9x6M1j2f1oQ)"
+            "Recipe": "Marinate fish, cook in ghee, sauté spinach. [Full Recipe](https://www.indianhealthyrecipes.com/fish-tikka/)"
         },
         "Snack": {
             "Meal": "Tandoori Bites",
@@ -490,7 +490,7 @@ def tracking_page():
         st.write("### Daily Updates")
         col1, col2 = st.columns(2)
         with col1:
-            mood = st.slider("Mood (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['mood'], 
+            mood = st.slider("Mood (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['mood'],
                            help="1: Deflated, 5: Neutral, 10: Optimistic")
             energy = st.slider("Energy (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['energy'],
                              help="1: Exhausted, 10: Energetic")
@@ -513,8 +513,17 @@ def tracking_page():
             })
             st.success("Daily data saved!")
 
-        # Biometric Data
+        # Biometric Data with Photo Guidance
         st.write("### Biometric Data")
+        st.markdown("""
+        #### Before Photo Guidelines
+        - Use **clear, natural lighting** that can be replicated for your "after" photo.
+        - Wear **tight-fitting clothing** you can wear again for consistency.
+        - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
+        #### Goal Photo Explanation
+        - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
+        - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
+        """)
         if st.button("Log Blood Work"):
             uploaded_file = st.file_uploader("Upload Blood Work Photo (PNG/JPG/PDF)", type=['png', 'jpg', 'jpeg', 'pdf'], key="blood")
             col1, col2 = st.columns(2)
