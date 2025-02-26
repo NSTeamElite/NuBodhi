@@ -89,7 +89,7 @@ def main():
         st.markdown("""
         ## Welcome to NuBodhi - Your Holistic Transformation Journey! 🌟
                # Welcome message with Indian healthy food image
-        st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0",
+        st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0", caption="Begin your wellness journey")
 
         Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
         guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
@@ -114,9 +114,7 @@ def main():
         - 🌟 Continuous support
 
         **NuBodhi is about better food, better sleep, better movement, and better supplements for a better you!**
-        """) 
-        caption="Begin your wellness journey")
-
+        """)
         st.write("### Let's Begin Your Journey!")
         st.write("Please share some basic information to personalize your experience.")
 
