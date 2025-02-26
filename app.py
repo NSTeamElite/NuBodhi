@@ -11,13 +11,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Remove or fix the CSS reference (since assets/style.css doesn’t exist)
-# Option 1: Remove it (simplest for now)
-# If you want styling later, create assets/style.css in GitHub
-# For now, comment it out:
-# with open('assets/style.css') as f:
-#     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
 # Initialize session state
 def initialize_session_state():
     today = datetime.now().strftime("%Y-%m-%d")
@@ -85,7 +78,9 @@ def show_exercise_reminder():
     return False
 
 def main():
+    # Title and food image at the top
     st.markdown("<h1 class='main-header'>🕉️ Nu Bodhi</h1>", unsafe_allow_html=True)
+    st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0", caption="Healthy Indian Meal Inspiration")
 
     if not st.session_state.user_data['name']:
         # Welcome message and philosophy
@@ -115,8 +110,6 @@ def main():
 
         **NuBodhi is about better food, better sleep, better movement, and better supplements for a better you!**
         """)
-        # Add the image outside the markdown (fixing the syntax error)
-        st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0", caption="Begin your journey")
         st.write("### Let's Begin Your Journey!")
         st.write("Please share some basic information to personalize your experience.")
 
