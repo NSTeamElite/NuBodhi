@@ -404,7 +404,7 @@ meat_meals = {
 # Main app pages
 def welcome_page():
     st.markdown("<h1 style='text-align: center;'>🕉️ Nu Bodhi</h1>", unsafe_allow_html=True)
-    st.image("https://images.unsplash.com/photo-1504754524776-8f4f37790ca0")  # No caption
+    st.image("https://unsplash.com/photos/a-table-topped-with-bowls-of-food-and-sauces-vsnAIYA9bms")  # No caption
     st.markdown("## Welcome to NuBodhi - Your Holistic Transformation Journey! 🌟")
     st.markdown("""
     Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
@@ -489,14 +489,14 @@ def tracking_page():
     if st.button("Log Weekly Metrics"):
         col1, col2 = st.columns(2)
         with col1:
-            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=0, key="weekly_weight")
-            arms = st.number_input("Arms (cm)", min_value=0, max_value=100, value=0)
-            chest = st.number_input("Chest (cm)", min_value=0, max_value=200, value=0)
-            waist = st.number_input("Waist (cm)", min_value=0, max_value=200, value=0)
+            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=1, key="weekly_weight")
+            arms = st.number_input("Arms (cm)", min_value=1, max_value=100, value=0)
+            chest = st.number_input("Chest (cm)", min_value=1, max_value=200, value=0)
+            waist = st.number_input("Waist (cm)", min_value=1, max_value=200, value=0)
         with col2:
-            hips = st.number_input("Hips (cm)", min_value=0, max_value=200, value=0)
-            thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100, value=0)
-            calves = st.number_input("Calves (cm)", min_value=0, max_value=100, value=0)
+            hips = st.number_input("Hips (cm)", min_value=1, max_value=200, value=0)
+            thighs = st.number_input("Thighs (cm)", min_value=1, max_value=100, value=0)
+            calves = st.number_input("Calves (cm)", min_value=1, max_value=100, value=0)
         if st.button("Save Weekly Data"):
             date = datetime.now().strftime("%Y-%m-%d")
             # Ensure weight_history is a list to avoid KeyError
