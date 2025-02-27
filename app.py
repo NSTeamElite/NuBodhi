@@ -216,18 +216,18 @@ def welcome_page():
     st.markdown("<h1 style='text-align: center;'>🕉️ NuBodhi</h1>", unsafe_allow_html=True)
     st.markdown("## Your Transformation Journey Begins Today")
     st.markdown("""
-    Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
-    guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
-    skipping sleep, and never tracking your progress.
-
-    If that's the recipe for weight gain (along with a dramatically shortened and painful life), then we're here to do the exact opposite!
-
     Welcome to NuBodhi, where we use the best of nature and science to:
     - Reset your gene expression
     - Crush cravings
     - Boost energy
     - Burn fat
     - Build muscle
+    
+    Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
+    guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
+    skipping sleep, and never tracking your progress.
+
+    If that's the recipe for weight gain (along with a dramatically shortened and painful life), then we're here to do the exact opposite!
 
     This is less about weight loss, and more about a holistic transformation into the best version of yourself.
 
@@ -438,51 +438,80 @@ def tips_help_page():
     st.markdown("<h2 style='text-align: center;'>💡Useful Tips</h2>", unsafe_allow_html=True)
     st.write("### Useful Tips for Holistic Fat Loss and Body Transformation")
     st.markdown("""
-    - **Prioritize Whole Foods:** Focus on unprocessed, nutrient-dense foods like vegetables, legumes, wild caught fish, lean meats and protein and vitamin rich eggs.  
-      *Tip:* Replace sugary snacks with nuts or seeds for sustained energy.
-    - **Incorporate Movement Daily:** Engage in short, frequent “Exercise Snacks” (e.g., 10 squats or a series of body weight exercises for 1-10 mins) to boost metabolism without overwhelming your schedule.  
-      *Tip:* 10 squats at random times throughout the day is as beneficial for your body as a 30-minute walk, despite taking a fraction of the time.
-    - **Optimize Sleep Quality:** Sleep is different for everyone, but in general aim for 6-8 hours of quality sleep nightly to regulate hormones like cortisol and ghrelin, which affect fat storage. The most important sleep time is prior to midnight, so it is better to get to bed before 10pm and wake early getting only 6hrs of sleep, than go to bed late and wake late getting 7hrs of sleep. It's the quality that matters the most.  
-      *Tip:* Create a wind-down routine (e.g., no food or stimulants after 7pm and no screens 1 hour before bed - charging your phone in another room and reading a book in bed is useful for this winding down) to improve sleep depth.
-    - **Use Supplements Wisely:** Leverage TRME's epigenetically targeted supplements that support fat burning, muscle growth and controlling cravings and improving sleep.  
-      *Tip:* The supplements are designed to work together enhancing results, so stick with the complete program and set reminders to take the supplements in the morning.
-    - **Stay Hydrated:** As your fat cells break up, they release toxins they have been storing for years. To aid in speeding up the removal of these toxins from your body, drink 1-2 liters of water daily. If you love fizzy drinks, then I recommend replacing them with carbonated mineral water or coconut water to help wean yourself off the sugar addiction. Herbal and green teas are a great way to increase the amount of fluids you are getting daily. Though I would avoid adding milk to these.  
-      *Tip:* Use a water filter and add a slice of lemon or cucumber for flavor.
-    - **Practice Mindful Eating:** If you're eating quality nutrient dense real food then the portion sizes aren't going to be the biggest issue, as you will feel increasingly full with less food (thanks to TRME). However one of the easiest ways to decrease the amount of food you consume without noticing it, is to shrink the utensils you serve the food in, and don't watch TV, your phone or anything while eating. This will slow down your eating allowing your body time to let you know it's full. If you feel you could have another serving, wait 20minutes, and that is likely to pass.  
-      *Tip:* Use smaller plates and utensils to naturally portion control your meals.
-    - **Build Muscle with Resistance:** Bodyweight exercises (e.g., squats, push-ups), and using a small weight like a kettlebell or dumbbell of 1-2kg (if new to resistance training) is the best way to increase muscle mass, boosting your metabolism and shaping your body. Focus on basic moves like squats as they target the largest muscles in the body, and have a flow on impact throughout the rest of your body.  
-      *Tip:* Start small with 5-10 squats a few times a day, and increase the number of reps/weight each week. Remember! The ultimate fat burning hack is having lots of muscle, as it burns calories while we're sitting and doing other things. So less focus on cardio, and more on resistance bodyweight training.
-    - **Manage Stress:** Reduce stress through gentle walks, yoga, meditation or breathing activities to lower cortisol levels, which can lead to fat retention, especially around the midsection.  
-      *Tip:* Try the simple 4 by 4 breathing exercise (breath in for 4 seconds, hold for 4, breathe out for 4 and hold for 4, then repeat) daily to reset your mind.
-    - **Track Progress Holistically:** Monitor mood, energy and sleep daily. Metrics like weight and measurements weekly. And body composition, Biophotonic score, bloodwork and photos on a monthly basis. This will allow you to track your transformation on many different levels, to witness the holistic nature of realising the best you!  
-      *Tip:* Be as thorough as possible with your preliminary measurements, this is key to the NuBodhi program being a longterm transformation, rather than a traditional short term diet.
-    - **Consistency Over Perfection:** Focus on sustainable habits rather than a strict diet — small consistent changes lead to lasting results.  
-      *Tip:* Celebrate the process more than the outcome, because if you are following the daily steps in the NuBodhi program, you will eventually reach your goals! Keep in mind, one bad meal or rough day is not the end of the world, as long as you don't let it turn into a slippery slope, and get right back with the program.
-    - **Incorporate Anti-Inflammatory Foods:** Add turmeric, ginger, and green tea to your diet to reduce inflammation, supporting fat loss and overall health.  
-      *Tip:* Make a warm turmeric and ginger tea with lemon and honey before bed, and it is useful to start your day with a luke warm glass of water with lemon.
-    - **Replace Processed Foods:** Seed oils and trans fats are highly processed, to the point where they cause more harm than good in your body. For this reason use natural good fats like Ghee, Coconut Oil, Olive Oil, grass fed Tallow and Butter, they are deeply beneficial and will assist with your transformation. Do the same thing with artificial sugars, and fillers to prevent epigenetic disruption and fat gain, if you have a sweet tooth, use raw non heat treated honey as your tastebuds gradually change to no longer crave sweet things constantly.  
+    - **Replace Processed Foods:** Seed oils and trans fats are highly processed, to the point where they cause more harm than good in your body. For this reason use natural good fats like Ghee, Coconut Oil, Olive Oil, grass fed Tallow and Butter, they are deeply beneficial and will assist with your transformation. Do the same thing with artificial sugars, and fillers to prevent epigenetic disruption and fat gain. If you have a sweet tooth, use raw non heat treated honey as your tastebuds gradually change to no longer crave sweet things constantly.  
+    
       *Tip:* Read every label. If you don't know what is in it, do not eat it.
+      
+    - **Prioritize Whole Foods:** Focus on unprocessed, nutrient-dense foods like vegetables, legumes, wild caught fish, lean meats and protein and vitamin rich eggs.  
+    
+      *Tip:* Replace sugary snacks with nuts or seeds for sustained energy.
+      
+    - **Incorporate Anti-Inflammatory Foods:** Add turmeric, ginger, and green tea to your diet to reduce inflammation, supporting fat loss and overall health.  
+    
+      *Tip:* Make a warm turmeric and ginger tea with lemon and honey before bed, and it is useful to start your day with a luke warm glass of water with lemon.
+     
+    - **Practice Mindful Eating:** If you're eating quality nutrient dense real food then the portion sizes aren't going to be the biggest issue, as you will feel increasingly full with less food (thanks to TRME). However one of the easiest ways to decrease the amount of food you consume without noticing it, is to shrink the utensils you serve the food in, and don't watch TV, your phone or anything while eating. This will slow down your eating allowing your body time to let you know it's full. If you feel you could have another serving, wait 20minutes, and that is likely to pass.
+    
+      *Tip:* Use smaller plates and utensils to naturally portion control your meals.
+      
+    - **Stay Hydrated:** As your fat cells break up, they release toxins they have been storing for years. To aid in speeding up the removal of these toxins from your body, drink 1-2 liters of water daily. If you love fizzy drinks, then I recommend replacing them with carbonated mineral water or coconut water to help wean yourself off the sugar addiction. Herbal and green teas are a great way to increase the amount of fluids you are getting daily. Though I would avoid adding milk to these.  
+      
+      *Tip:* Use a water filter and add a slice of lemon or cucumber for flavor.
+      
+    - **Incorporate Movement Daily:** Engage in short, frequent “Exercise Snacks” (e.g., 10 squats or a series of body weight exercises for 1-10 mins) to boost metabolism without overwhelming your schedule.  
+      
+      *Tip:* 10 squats at random times throughout the day is as beneficial for your body as a 30-minute walk, despite taking a fraction of the time.
+      
+    - **Optimize Sleep Quality:** Sleep is different for everyone, but in general aim for 6-8 hours of quality sleep nightly to regulate hormones like cortisol and ghrelin, which affect fat storage. The most important sleep time is prior to midnight, so it is better to get to bed before 10pm and wake early getting only 6hrs of sleep, than go to bed late and wake late getting 7hrs of sleep. It's the quality that matters the most.  
+      
+      *Tip:* Create a wind-down routine (e.g., no food or stimulants after 7pm and no screens 1 hour before bed - charging your phone in another room and reading a book in bed is useful for this winding down) to improve sleep depth.
+      
+    - **Use Supplements Wisely:** Leverage TRME's epigenetically targeted supplements that support fat burning, muscle growth and controlling cravings and improving sleep. 
+    
+      *Tip:* The supplements are designed to work together enhancing results, so stick with the complete program and set reminders to take the supplements in the morning.
+     
+    - **Build Muscle with Resistance:** Bodyweight exercises (e.g., squats, push-ups), and using a small weight like a kettlebell or dumbbell of 1-2kg (if new to resistance training) is the best way to increase muscle mass, boosting your metabolism and shaping your body. Focus on basic moves like squats as they target the largest muscles in the body, and have a flow on impact throughout the rest of your body.  
+    
+      *Tip:* Start small with 5-10 squats a few times a day, and increase the number of reps/weight each week. Remember! The ultimate fat burning hack is having lots of muscle, as it burns calories while we're sitting and doing other things. So less focus on cardio, and more on resistance bodyweight training.
+      
+    - **Manage Stress:** Reduce stress through gentle walks, yoga, meditation or breathing activities to lower cortisol levels, which can lead to fat retention, especially around the midsection.  
+    
+      *Tip:* Try the simple 4 by 4 breathing exercise (breath in for 4 seconds, hold for 4, breathe out for 4 and hold for 4, then repeat) daily to reset your mind.
+      
+    - **Track Progress Holistically:** Monitor mood, energy and sleep daily. Metrics like weight and measurements weekly. And body composition, Biophotonic score, bloodwork and photos on a monthly basis. This will allow you to track your transformation on many different levels, to witness the holistic nature of realising the best you! 
+    
+      *Tip:* Be as thorough as possible with your preliminary measurements, this is key to the NuBodhi program being a longterm transformation, rather than a traditional short term diet.
+      
+    - **Consistency Over Perfection:** Focus on sustainable habits rather than a strict diet — small consistent changes lead to lasting results.  
+    
+      *Tip:* Celebrate the process more than the outcome, because if you are following the daily steps in the NuBodhi program, you will eventually reach your goals! Keep in mind, one bad meal or rough day is not the end of the world, as long as you don't let it turn into a slippery slope, and get right back with the program.
+      
     - **Use Alarms Wisely:** Each morning set a series of 3-6 alarms on your phone to go off at random times throughout the day, these are for your Exercise Snacks. Set a sound that is uplifting and excites you to stop what you're doing and move your body up and down consciously doing 10 squats (or whatever number of squats you have worked up to). Try to bring your focus into your leg muscles as you do the squats, really feel them working, and know that they're growing stronger with each rep.  
+      
       *Tip:* You can also set alarms for taking your TRME supplements, and scheduling down time to do conscious breathwork, or go for a walk.
+    
     - **Keep in Touch:** Your NuBodhi guide is here for you, and is either on the same journey, has been through what you're going through, or is working with people who have. So they're uniquely positioned to help you reach your goals, which is a fundamental aspect of the NuBodhi program, the ability to be part of a community working together to bring out the best in each other. So keep in touch, share your experiences, and celebrate your success at an upcoming NuBodhi Transformation event!  
+      
       *Tip:* Your NuBodhi guide can include you in the social media support groups and help with any questions along the way.
+     
     - **Use Tools:** We have a whole range of powerful tools to assist you in achieving your transformation goals, working on both the inside and the outside. Ask your guide about the innovative Wellspa device that is the perfect companion for the TRME supplements, as it tightens and tones the skin, while improving circulation and easing muscle pain and soreness.  
+     
       *Tip:* Your NuBodhi guide can help find the right tool for you to speed up results, just let them know what your goals are and they'll be able to point you in the right direction.
     """)
 
 # Main app with navigation
 def main():
     st.sidebar.title("Navigation 📍")
-    page = st.sidebar.radio("Go to", ["Welcome", "Meals", "Tracking", "Useful Tips"])
+    page = st.sidebar.radio("Go to", ["Welcome", "Tracking", "Useful Tips", "Meals"])
 
     if page == "Welcome":
         welcome_page()
-    elif page == "Meals":
-        meals_page()
     elif page == "Tracking":
         tracking_page()
     elif page == "Useful Tips":
         tips_help_page()
+    elif page == "Meals":
+        meals_page()
 
 if __name__ == "__main__":
     main()
