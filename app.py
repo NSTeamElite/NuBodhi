@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import random
+import sqlite3
 
 # Page configuration
 st.set_page_config(
@@ -10,11 +11,21 @@ st.set_page_config(
     layout="wide"
 )
 
+# Initialize database connection
+def init_db():
+    conn = sqlite3.connect('nubodhi_data.db', check_same_thread=False)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS user_data
+                 (user_id TEXT, data_type TEXT, date TEXT, value TEXT)''')
+    conn.commit()
+    return conn
+
 # Initialize session state
 def initialize_session_state():
     today = datetime.now().strftime("%Y-%m-%d")
     if 'user_data' not in st.session_state:
         st.session_state.user_data = {
+            'user_id': '',
             'name': '',
             'age': 0,
             'gender': '',
@@ -55,8 +66,27 @@ def initialize_session_state():
             },
             'week_number': 1
         }
+    conn = getattr(st.session_state, 'db_connection', None)
+    if conn is None:
+        st.session_state.db_connection = init_db()
 
 initialize_session_state()
+
+# Save data to database
+def save_to_db(user_id, data_type, date, value):
+    conn = st.session_state.db_connection
+    c = conn.cursor()
+    c.execute("INSERT INTO user_data (user_id, data_type, date, value) VALUES (?, ?, ?, ?)",
+              (user_id, data_type, date, str(value)))
+    conn.commit()
+
+# Load data from database
+def load_from_db(user_id, data_type):
+    conn = st.session_state.db_connection
+    c = conn.cursor()
+    c.execute("SELECT date, value FROM user_data WHERE user_id = ? AND data_type = ? ORDER BY date",
+              (user_id, data_type))
+    return c.fetchall()
 
 # Exercise reminder function
 def show_exercise_reminder():
@@ -184,7 +214,7 @@ meat_meals = {
 # Main app pages
 def welcome_page():
     st.markdown("<h1 style='text-align: center;'>🕉️ NuBodhi</h1>", unsafe_allow_html=True)
-    st.markdown("## Your Holistic Transformation Journey Begins Today")
+    st.markdown("## Your Transformation Journey Begins Today")
     st.markdown("""
     Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
     guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
@@ -265,20 +295,9 @@ def tracking_page():
     else:
         st.write("**BMI and Calories:** Enter and save personal info to calculate.")
 
-    # Weekly Tracking
+    # Weekly Tracking (simplified to weight only)
     st.write("### Weekly Updates")
-    if st.button("Log Weekly Metrics"):
-        col1, col2 = st.columns(2)
-        with col1:
-            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=1, key="weekly_weight")
-        with col2:
-            pass  # Measurements moved to daily section
-        if st.button("Save Weekly Data"):
-            date = datetime.now().strftime("%Y-%m-%d")
-            if not isinstance(st.session_state.user_data['weight_history'], list):
-                st.session_state.user_data['weight_history'] = []
-            st.session_state.user_data['weight_history'].append((date, weight))
-            st.success("Weekly data saved!")
+    # Removed Log Weekly Metrics button and inputs since measurements are now daily
 
     # Daily Tracking with Measurements
     st.write("### Daily Updates")
@@ -421,7 +440,7 @@ def tracking_page():
         st.line_chart(pd.DataFrame({'Mood (1-10)': moods}, index=dates))
 
 def tips_help_page():
-    st.markdown("<h2 style='text-align: center;'>💡 Tips+Help</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>💡Useful Tips</h2>", unsafe_allow_html=True)
     st.write("### Useful Tips for Holistic Fat Loss and Body Transformation")
     st.markdown("""
     - **Prioritize Whole Foods:** Focus on unprocessed, nutrient-dense foods like vegetables, legumes, wild caught fish, lean meats and protein and vitamin rich eggs.  
@@ -443,7 +462,7 @@ def tips_help_page():
     - **Track Progress Holistically:** Monitor mood, energy and sleep daily. Metrics like weight and measurements weekly. And body composition, Biophotonic score, bloodwork and photos on a monthly basis. This will allow you to track your transformation on many different levels, to witness the holistic nature of realising the best you!  
       *Tip:* Be as thorough as possible with your preliminary measurements, this is key to the NuBodhi program being a longterm transformation, rather than a traditional short term diet.
     - **Consistency Over Perfection:** Focus on sustainable habits rather than a strict diet — small consistent changes lead to lasting results.  
-      *Tip:* Celebrate the process more than the outcome, because if you are following the daily steps in the NuBodhi program, you will eventually reach your goals!Keep in mind, one bad meal or rough day is not the end of the world, as long as you don't let it turn into a slippery slope, and get right back with the program.
+      *Tip:* Celebrate the process more than the outcome, because if you are following the daily steps in the NuBodhi program, you will eventually reach your goals! Keep in mind, one bad meal or rough day is not the end of the world, as long as you don't let it turn into a slippery slope, and get right back with the program.
     - **Incorporate Anti-Inflammatory Foods:** Add turmeric, ginger, and green tea to your diet to reduce inflammation, supporting fat loss and overall health.  
       *Tip:* Make a warm turmeric and ginger tea with lemon and honey before bed, and it is useful to start your day with a luke warm glass of water with lemon.
     - **Replace Processed Foods:** Seed oils and trans fats are highly processed, to the point where they cause more harm than good in your body. For this reason use natural good fats like Ghee, Coconut Oil, Olive Oil, grass fed Tallow and Butter, they are deeply beneficial and will assist with your transformation. Do the same thing with artificial sugars, and fillers to prevent epigenetic disruption and fat gain, if you have a sweet tooth, use raw non heat treated honey as your tastebuds gradually change to no longer crave sweet things constantly.  
@@ -459,7 +478,7 @@ def tips_help_page():
 # Main app with navigation
 def main():
     st.sidebar.title("Navigation 📍")
-    page = st.sidebar.radio("Go to", ["Welcome", "Meals", "Tracking", "Tips+Help"])
+    page = st.sidebar.radio("Go to", ["Welcome", "Meals", "Tracking", "Useful Tips"])
 
     if page == "Welcome":
         welcome_page()
@@ -467,7 +486,7 @@ def main():
         meals_page()
     elif page == "Tracking":
         tracking_page()
-    elif page == "Tips+Help":
+    elif page == "Useful Tips":
         tips_help_page()
 
 if __name__ == "__main__":
