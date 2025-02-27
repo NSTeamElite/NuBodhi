@@ -40,7 +40,13 @@ def initialize_session_state():
                 'mood': 5,
                 'energy': 5,
                 'sleep_hours': 7.0,
-                'sleep_quality': 5
+                'sleep_quality': 5,
+                'arms': 0,
+                'chest': 0,
+                'waist': 0,
+                'hips': 0,
+                'thighs': 0,
+                'calves': 0
             },
             'exercise_reminders': {
                 'last_reminder': None,
@@ -67,8 +73,6 @@ def show_exercise_reminder():
             return True
     return False
 
-# ... (Keep existing imports and initialize_session_state function unchanged)
-
 # BMI and Calorie Calculation with Error Handling
 def calculate_bmi(weight, height):
     try:
@@ -86,318 +90,94 @@ def calculate_calories(age, gender, weight, height, activity_level):
     except (ZeroDivisionError, KeyError):
         return 0
 
-# Extended Meal Plans with No Links
+# Extended Meal Plans
 vegetarian_meals = {
     "Monday": {
-        "Breakfast": {
-            "Meal": "Besan Cheela",
-            "Ingredients": ["1 cup chickpea flour", "1/2 cup water", "1/2 tsp turmeric", "1 tsp cumin", "1 small onion (chopped)", "1 tomato (chopped)", "2 tbsp ghee"],
-            "Recipe": "Mix ingredients into a batter, heat ghee in a pan, pour batter, cook 2-3 mins per side."
-        },
-        "Lunch": {
-            "Meal": "Leftover Cheela with Cucumber Raita",
-            "Ingredients": ["Leftover cheela", "1 cup yogurt", "1 cucumber (grated)", "1/2 tsp cumin", "Salt to taste"],
-            "Recipe": "Reheat cheela, mix yogurt, cucumber, cumin, and salt for raita. Serve together."
-        },
-        "Dinner": {
-            "Meal": "Dal Tadka with Jeera Rice",
-            "Ingredients": ["1 cup red lentils", "2 tbsp ghee", "1 tsp cumin seeds", "1/2 tsp turmeric", "2 garlic cloves", "1 cup rice"],
-            "Recipe": "Boil lentils with turmeric, fry cumin and garlic in ghee, mix. Cook rice with ghee and cumin."
-        },
-        "Snack": {
-            "Meal": "Roasted Makhana",
-            "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper to taste"],
-            "Recipe": "Roast makhana in ghee with salt and pepper for 5 mins."
-        }
+        "Breakfast": {"Meal": "Besan Cheela", "Ingredients": ["1 cup chickpea flour", "1/2 cup water", "1/2 tsp turmeric", "1 tsp cumin", "1 small onion (chopped)", "1 tomato (chopped)", "2 tbsp ghee"], "Recipe": "Mix ingredients into a batter, heat ghee in a pan, pour batter, cook 2-3 mins per side."},
+        "Lunch": {"Meal": "Leftover Cheela with Cucumber Raita", "Ingredients": ["Leftover cheela", "1 cup yogurt", "1 cucumber (grated)", "1/2 tsp cumin", "Salt to taste"], "Recipe": "Reheat cheela, mix yogurt, cucumber, cumin, and salt for raita. Serve together."},
+        "Dinner": {"Meal": "Dal Tadka with Jeera Rice", "Ingredients": ["1 cup red lentils", "2 tbsp ghee", "1 tsp cumin seeds", "1/2 tsp turmeric", "2 garlic cloves", "1 cup rice"], "Recipe": "Boil lentils with turmeric, fry cumin and garlic in ghee, mix. Cook rice with ghee and cumin."},
+        "Snack": {"Meal": "Roasted Makhana", "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper to taste"], "Recipe": "Roast makhana in ghee with salt and pepper for 5 mins."}
     },
     "Tuesday": {
-        "Breakfast": {
-            "Meal": "Stuffed Paratha",
-            "Ingredients": ["2 cups whole wheat flour", "2 boiled potatoes (mashed)", "1 tbsp ghee", "1 tsp cumin"],
-            "Recipe": "Knead dough, stuff with mashed potatoes and cumin, cook with ghee."
-        },
-        "Lunch": {
-            "Meal": "Dal with Leftover Rice",
-            "Ingredients": ["Leftover dal", "Leftover rice", "1 tsp ghee"],
-            "Recipe": "Reheat dal and rice with ghee in 5 mins."
-        },
-        "Dinner": {
-            "Meal": "Palak Paneer with Roti",
-            "Ingredients": ["2 cups spinach", "200g paneer", "2 tbsp ghee", "1 tsp garlic", "1 tsp ginger", "1 cup whole wheat flour"],
-            "Recipe": "Blend spinach, cook with ghee, garlic, ginger, add paneer. Make roti with flour and ghee."
-        },
-        "Snack": {
-            "Meal": "Roasted Peanuts",
-            "Ingredients": ["1 cup peanuts", "1 tbsp ghee", "Salt to taste"],
-            "Recipe": "Roast peanuts in ghee with salt for 5 mins."
-        }
+        "Breakfast": {"Meal": "Stuffed Paratha", "Ingredients": ["2 cups whole wheat flour", "2 boiled potatoes (mashed)", "1 tbsp ghee", "1 tsp cumin"], "Recipe": "Knead dough, stuff with mashed potatoes and cumin, cook with ghee."},
+        "Lunch": {"Meal": "Dal with Leftover Rice", "Ingredients": ["Leftover dal", "Leftover rice", "1 tsp ghee"], "Recipe": "Reheat dal and rice with ghee in 5 mins."},
+        "Dinner": {"Meal": "Palak Paneer with Roti", "Ingredients": ["2 cups spinach", "200g paneer", "2 tbsp ghee", "1 tsp garlic", "1 tsp ginger", "1 cup whole wheat flour"], "Recipe": "Blend spinach, cook with ghee, garlic, ginger, add paneer. Make roti with flour and ghee."},
+        "Snack": {"Meal": "Roasted Peanuts", "Ingredients": ["1 cup peanuts", "1 tbsp ghee", "Salt to taste"], "Recipe": "Roast peanuts in ghee with salt for 5 mins."}
     },
     "Wednesday": {
-        "Breakfast": {
-            "Meal": "Poha",
-            "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric", "1/4 cup peanuts"],
-            "Recipe": "Soak rice, heat ghee, add mustard seeds, turmeric, peanuts, mix."
-        },
-        "Lunch": {
-            "Meal": "Aloo Gobi with Roti",
-            "Ingredients": ["2 potatoes", "1 cauliflower", "2 tbsp ghee", "1 tsp cumin", "1 cup whole wheat flour"],
-            "Recipe": "Cook potatoes and cauliflower with ghee and cumin. Make roti with flour."
-        },
-        "Dinner": {
-            "Meal": "Chana Masala with Rice",
-            "Ingredients": ["1 cup chickpeas", "2 tbsp ghee", "2 tomatoes", "1 tsp garam masala", "1 cup rice"],
-            "Recipe": "Soak chickpeas, cook with ghee, tomatoes, spices. Serve with rice."
-        },
-        "Snack": {
-            "Meal": "Roasted Makhana",
-            "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper"],
-            "Recipe": "Roast in ghee with salt and pepper for 5 mins."
-        }
+        "Breakfast": {"Meal": "Poha", "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric", "1/4 cup peanuts"], "Recipe": "Soak rice, heat ghee, add mustard seeds, turmeric, peanuts, mix."},
+        "Lunch": {"Meal": "Aloo Gobi with Roti", "Ingredients": ["2 potatoes", "1 cauliflower", "2 tbsp ghee", "1 tsp cumin", "1 cup whole wheat flour"], "Recipe": "Cook potatoes and cauliflower with ghee and cumin. Make roti with flour."},
+        "Dinner": {"Meal": "Chana Masala with Rice", "Ingredients": ["1 cup chickpeas", "2 tbsp ghee", "2 tomatoes", "1 tsp garam masala", "1 cup rice"], "Recipe": "Soak chickpeas, cook with ghee, tomatoes, spices. Serve with rice."},
+        "Snack": {"Meal": "Roasted Makhana", "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper"], "Recipe": "Roast in ghee with salt and pepper for 5 mins."}
     },
     "Thursday": {
-        "Breakfast": {
-            "Meal": "Leftover Chana Masala with Paratha",
-            "Ingredients": ["Leftover chana masala", "1 cup whole wheat flour", "1 tbsp ghee"],
-            "Recipe": "Reheat chana, make fresh paratha with flour and ghee."
-        },
-        "Lunch": {
-            "Meal": "Palak Paneer with Rice",
-            "Ingredients": ["Leftover palak paneer", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat palak paneer, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Rajma with Jeera Rice",
-            "Ingredients": ["1 cup kidney beans", "2 tbsp ghee", "1 tsp cumin", "1 cup rice"],
-            "Recipe": "Cook beans with ghee and spices, serve with cumin rice."
-        },
-        "Snack": {
-            "Meal": "Cucumber Slices with Chaat Masala",
-            "Ingredients": ["1 cucumber", "1 tsp chaat masala"],
-            "Recipe": "Slice cucumber, sprinkle chaat masala."
-        }
+        "Breakfast": {"Meal": "Leftover Chana Masala with Paratha", "Ingredients": ["Leftover chana masala", "1 cup whole wheat flour", "1 tbsp ghee"], "Recipe": "Reheat chana, make fresh paratha with flour and ghee."},
+        "Lunch": {"Meal": "Palak Paneer with Rice", "Ingredients": ["Leftover palak paneer", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat palak paneer, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Rajma with Jeera Rice", "Ingredients": ["1 cup kidney beans", "2 tbsp ghee", "1 tsp cumin", "1 cup rice"], "Recipe": "Cook beans with ghee and spices, serve with cumin rice."},
+        "Snack": {"Meal": "Cucumber Slices with Chaat Masala", "Ingredients": ["1 cucumber", "1 tsp chaat masala"], "Recipe": "Slice cucumber, sprinkle chaat masala."}
     },
     "Friday": {
-        "Breakfast": {
-            "Meal": "Vegetable Upma",
-            "Ingredients": ["1 cup semolina", "1 tbsp ghee", "1/4 cup mixed veggies (carrot, peas)"],
-            "Recipe": "Roast semolina, add ghee, veggies, cook 15 mins."
-        },
-        "Lunch": {
-            "Meal": "Aloo Gobi with Roti",
-            "Ingredients": ["Leftover aloo gobi", "1 cup whole wheat flour", "1 tbsp ghee"],
-            "Recipe": "Reheat aloo gobi, make fresh roti."
-        },
-        "Dinner": {
-            "Meal": "Baingan Bharta with Roti",
-            "Ingredients": ["1 large eggplant", "2 tbsp ghee", "2 tomatoes", "1 cup whole wheat flour"],
-            "Recipe": "Roast eggplant, mash with ghee and tomatoes. Make roti."
-        },
-        "Snack": {
-            "Meal": "Roasted Peanuts",
-            "Ingredients": ["1 cup peanuts", "1 tbsp ghee", "Salt"],
-            "Recipe": "Roast in ghee with salt for 5 mins."
-        }
+        "Breakfast": {"Meal": "Vegetable Upma", "Ingredients": ["1 cup semolina", "1 tbsp ghee", "1/4 cup mixed veggies (carrot, peas)"], "Recipe": "Roast semolina, add ghee, veggies, cook 15 mins."},
+        "Lunch": {"Meal": "Aloo Gobi with Roti", "Ingredients": ["Leftover aloo gobi", "1 cup whole wheat flour", "1 tbsp ghee"], "Recipe": "Reheat aloo gobi, make fresh roti."},
+        "Dinner": {"Meal": "Baingan Bharta with Roti", "Ingredients": ["1 large eggplant", "2 tbsp ghee", "2 tomatoes", "1 cup whole wheat flour"], "Recipe": "Roast eggplant, mash with ghee and tomatoes. Make roti."},
+        "Snack": {"Meal": "Roasted Peanuts", "Ingredients": ["1 cup peanuts", "1 tbsp ghee", "Salt"], "Recipe": "Roast in ghee with salt for 5 mins."}
     },
     "Saturday": {
-        "Breakfast": {
-            "Meal": "Besan Cheela",
-            "Ingredients": ["1 cup chickpea flour", "1/2 cup water", "1/2 tsp turmeric", "1 tsp cumin", "2 tbsp ghee"],
-            "Recipe": "Mix, cook in ghee, 2-3 mins per side."
-        },
-        "Lunch": {
-            "Meal": "Rajma with Rice",
-            "Ingredients": ["Leftover rajma", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat rajma, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Mixed Veg Curry with Roti",
-            "Ingredients": ["1 cup mixed veggies", "2 tbsp ghee", "1 tsp spices", "1 cup whole wheat flour"],
-            "Recipe": "Cook veggies with ghee and spices, make roti."
-        },
-        "Snack": {
-            "Meal": "Roasted Makhana",
-            "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper"],
-            "Recipe": "Roast in ghee with salt and pepper for 5 mins."
-        }
+        "Breakfast": {"Meal": "Besan Cheela", "Ingredients": ["1 cup chickpea flour", "1/2 cup water", "1/2 tsp turmeric", "1 tsp cumin", "2 tbsp ghee"], "Recipe": "Mix, cook in ghee, 2-3 mins per side."},
+        "Lunch": {"Meal": "Rajma with Rice", "Ingredients": ["Leftover rajma", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat rajma, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Mixed Veg Curry with Roti", "Ingredients": ["1 cup mixed veggies", "2 tbsp ghee", "1 tsp spices", "1 cup whole wheat flour"], "Recipe": "Cook veggies with ghee and spices, make roti."},
+        "Snack": {"Meal": "Roasted Makhana", "Ingredients": ["1 cup makhana", "1 tbsp ghee", "Salt, pepper"], "Recipe": "Roast in ghee with salt and pepper for 5 mins."}
     },
     "Sunday": {
-        "Breakfast": {
-            "Meal": "Poha",
-            "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric"],
-            "Recipe": "Soak rice, cook with ghee, mustard, turmeric."
-        },
-        "Lunch": {
-            "Meal": "Mixed Veg Curry with Rice",
-            "Ingredients": ["Leftover mixed veg curry", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat curry, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Paneer Tikka with Sautéed Spinach",
-            "Ingredients": ["200g paneer", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach", "1 tsp spices"],
-            "Recipe": "Marinate paneer with yogurt, cook in ghee, sauté spinach."
-        },
-        "Snack": {
-            "Meal": "Cucumber Slices",
-            "Ingredients": ["1 cucumber"],
-            "Recipe": "Slice and serve."
-        }
+        "Breakfast": {"Meal": "Poha", "Ingredients": ["2 cups flattened rice", "1 tbsp ghee", "1 tsp mustard seeds", "1/2 tsp turmeric"], "Recipe": "Soak rice, cook with ghee, mustard, turmeric."},
+        "Lunch": {"Meal": "Mixed Veg Curry with Rice", "Ingredients": ["Leftover mixed veg curry", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat curry, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Paneer Tikka with Sautéed Spinach", "Ingredients": ["200g paneer", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach", "1 tsp spices"], "Recipe": "Marinate paneer with yogurt, cook in ghee, sauté spinach."},
+        "Snack": {"Meal": "Cucumber Slices", "Ingredients": ["1 cucumber"], "Recipe": "Slice and serve."}
     }
 }
 
 meat_meals = {
     "Monday": {
-        "Breakfast": {
-            "Meal": "Chicken Masala Omelette",
-            "Ingredients": ["2 eggs", "100g shredded chicken", "1 tbsp ghee", "1/2 tsp turmeric"],
-            "Recipe": "Mix eggs, chicken, spices, cook in ghee."
-        },
-        "Lunch": {
-            "Meal": "Chicken Curry with Cauliflower Rice",
-            "Ingredients": ["200g chicken", "1 tbsp coconut oil", "1 tsp garlic", "1 cup cauliflower"],
-            "Recipe": "Cook chicken with spices and oil, sauté cauliflower."
-        },
-        "Dinner": {
-            "Meal": "Mutton Keema with Roti",
-            "Ingredients": ["200g mutton mince", "2 tbsp ghee", "1 tsp garlic", "1 cup whole wheat flour"],
-            "Recipe": "Cook mince with ghee and spices, make roti."
-        },
-        "Snack": {
-            "Meal": "Tandoori Chicken Bites",
-            "Ingredients": ["200g chicken", "1 tbsp yogurt", "1 tbsp ghee", "1 tsp tandoori spices"],
-            "Recipe": "Marinate, cook in ghee or oven."
-        }
+        "Breakfast": {"Meal": "Chicken Masala Omelette", "Ingredients": ["2 eggs", "100g shredded chicken", "1 tbsp ghee", "1/2 tsp turmeric"], "Recipe": "Mix eggs, chicken, spices, cook in ghee."},
+        "Lunch": {"Meal": "Chicken Curry with Cauliflower Rice", "Ingredients": ["200g chicken", "1 tbsp coconut oil", "1 tsp garlic", "1 cup cauliflower"], "Recipe": "Cook chicken with spices and oil, sauté cauliflower."},
+        "Dinner": {"Meal": "Mutton Keema with Roti", "Ingredients": ["200g mutton mince", "2 tbsp ghee", "1 tsp garlic", "1 cup whole wheat flour"], "Recipe": "Cook mince with ghee and spices, make roti."},
+        "Snack": {"Meal": "Tandoori Chicken Bites", "Ingredients": ["200g chicken", "1 tbsp yogurt", "1 tbsp ghee", "1 tsp tandoori spices"], "Recipe": "Marinate, cook in ghee or oven."}
     },
     "Tuesday": {
-        "Breakfast": {
-            "Meal": "Leftover Chicken Omelette Mix",
-            "Ingredients": ["Leftover chicken mix", "2 eggs", "1 tsp ghee"],
-            "Recipe": "Fry with fresh eggs and ghee."
-        },
-        "Lunch": {
-            "Meal": "Chicken Curry with Rice",
-            "Ingredients": ["Leftover chicken curry", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat curry, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Palak Chicken with Roti",
-            "Ingredients": ["Leftover chicken", "2 cups spinach", "2 tbsp ghee", "1 cup whole wheat flour"],
-            "Recipe": "Cook spinach with ghee, add chicken, make roti."
-        },
-        "Snack": {
-            "Meal": "Roasted Almonds",
-            "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"],
-            "Recipe": "Roast in ghee with salt for 5 mins."
-        }
+        "Breakfast": {"Meal": "Leftover Chicken Omelette Mix", "Ingredients": ["Leftover chicken mix", "2 eggs", "1 tsp ghee"], "Recipe": "Fry with fresh eggs and ghee."},
+        "Lunch": {"Meal": "Chicken Curry with Rice", "Ingredients": ["Leftover chicken curry", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat curry, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Palak Chicken with Roti", "Ingredients": ["Leftover chicken", "2 cups spinach", "2 tbsp ghee", "1 cup whole wheat flour"], "Recipe": "Cook spinach with ghee, add chicken, make roti."},
+        "Snack": {"Meal": "Roasted Almonds", "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"], "Recipe": "Roast in ghee with salt for 5 mins."}
     },
     "Wednesday": {
-        "Breakfast": {
-            "Meal": "Egg Bhurji with Chicken",
-            "Ingredients": ["2 eggs", "Leftover chicken", "1 tbsp ghee", "1/2 tsp cumin"],
-            "Recipe": "Scramble eggs with chicken and cumin in ghee."
-        },
-        "Lunch": {
-            "Meal": "Mutton Keema with Cauliflower Rice",
-            "Ingredients": ["Leftover mutton keema", "1 cup cauliflower", "1 tbsp ghee"],
-            "Recipe": "Reheat keema, sauté cauliflower with ghee."
-        },
-        "Dinner": {
-            "Meal": "Chicken Tikka with Sautéed Greens",
-            "Ingredients": ["200g chicken", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"],
-            "Recipe": "Marinate chicken, cook in ghee, sauté greens."
-        },
-        "Snack": {
-            "Meal": "Tandoori Bites",
-            "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"],
-            "Recipe": "Reheat or eat cold."
-        }
+        "Breakfast": {"Meal": "Egg Bhurji with Chicken", "Ingredients": ["2 eggs", "Leftover chicken", "1 tbsp ghee", "1/2 tsp cumin"], "Recipe": "Scramble eggs with chicken and cumin in ghee."},
+        "Lunch": {"Meal": "Mutton Keema with Cauliflower Rice", "Ingredients": ["Leftover mutton keema", "1 cup cauliflower", "1 tbsp ghee"], "Recipe": "Reheat keema, sauté cauliflower with ghee."},
+        "Dinner": {"Meal": "Chicken Tikka with Sautéed Greens", "Ingredients": ["200g chicken", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"], "Recipe": "Marinate chicken, cook in ghee, sauté greens."},
+        "Snack": {"Meal": "Tandoori Bites", "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"], "Recipe": "Reheat or eat cold."}
     },
     "Thursday": {
-        "Breakfast": {
-            "Meal": "Mutton Omelette",
-            "Ingredients": ["2 eggs", "Leftover mutton keema", "1 tbsp ghee"],
-            "Recipe": "Mix eggs with keema, cook in ghee."
-        },
-        "Lunch": {
-            "Meal": "Palak Chicken with Rice",
-            "Ingredients": ["Leftover palak chicken", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Fish Curry with Cauliflower Rice",
-            "Ingredients": ["200g fish", "1 tbsp coconut oil", "1 cup cauliflower", "1 tsp turmeric"],
-            "Recipe": "Cook fish with oil and spices, sauté cauliflower."
-        },
-        "Snack": {
-            "Meal": "Roasted Almonds",
-            "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"],
-            "Recipe": "Roast in ghee with salt for 5 mins."
-        }
+        "Breakfast": {"Meal": "Mutton Omelette", "Ingredients": ["2 eggs", "Leftover mutton keema", "1 tbsp ghee"], "Recipe": "Mix eggs with keema, cook in ghee."},
+        "Lunch": {"Meal": "Palak Chicken with Rice", "Ingredients": ["Leftover palak chicken", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Fish Curry with Cauliflower Rice", "Ingredients": ["200g fish", "1 tbsp coconut oil", "1 cup cauliflower", "1 tsp turmeric"], "Recipe": "Cook fish with oil and spices, sauté cauliflower."},
+        "Snack": {"Meal": "Roasted Almonds", "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"], "Recipe": "Roast in ghee with salt for 5 mins."}
     },
     "Friday": {
-        "Breakfast": {
-            "Meal": "Chicken Tikka Omelette",
-            "Ingredients": ["2 eggs", "Leftover chicken tikka", "1 tbsp ghee"],
-            "Recipe": "Fry eggs with tikka in ghee."
-        },
-        "Lunch": {
-            "Meal": "Fish Curry with Rice",
-            "Ingredients": ["Leftover fish curry", "1 cup rice", "1 tsp ghee"],
-            "Recipe": "Reheat curry, cook fresh rice with ghee."
-        },
-        "Dinner": {
-            "Meal": "Mutton Rogan Josh with Greens",
-            "Ingredients": ["200g mutton", "2 tbsp ghee", "1 tbsp yogurt", "2 cups methi"],
-            "Recipe": "Cook mutton with ghee and yogurt, sauté greens."
-        },
-        "Snack": {
-            "Meal": "Tandoori Bites",
-            "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"],
-            "Recipe": "Reheat or eat cold."
-        }
+        "Breakfast": {"Meal": "Chicken Tikka Omelette", "Ingredients": ["2 eggs", "Leftover chicken tikka", "1 tbsp ghee"], "Recipe": "Fry eggs with tikka in ghee."},
+        "Lunch": {"Meal": "Fish Curry with Rice", "Ingredients": ["Leftover fish curry", "1 cup rice", "1 tsp ghee"], "Recipe": "Reheat curry, cook fresh rice with ghee."},
+        "Dinner": {"Meal": "Mutton Rogan Josh with Greens", "Ingredients": ["200g mutton", "2 tbsp ghee", "1 tbsp yogurt", "2 cups methi"], "Recipe": "Cook mutton with ghee and yogurt, sauté greens."},
+        "Snack": {"Meal": "Tandoori Bites", "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"], "Recipe": "Reheat or eat cold."}
     },
     "Saturday": {
-        "Breakfast": {
-            "Meal": "Egg Bhurji",
-            "Ingredients": ["2 eggs", "1 tbsp ghee", "1/2 tsp cumin"],
-            "Recipe": "Scramble eggs with ghee and cumin."
-        },
-        "Lunch": {
-            "Meal": "Chicken Tikka with Cauliflower Rice",
-            "Ingredients": ["Leftover chicken tikka", "1 cup cauliflower", "1 tbsp ghee"],
-            "Recipe": "Reheat tikka, sauté cauliflower with ghee."
-        },
-        "Dinner": {
-            "Meal": "Butter Chicken with Rice",
-            "Ingredients": ["200g chicken", "2 tbsp ghee", "1 cup cream", "1 cup rice"],
-            "Recipe": "Cook chicken with ghee and cream, serve with rice."
-        },
-        "Snack": {
-            "Meal": "Roasted Almonds",
-            "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"],
-            "Recipe": "Roast in ghee with salt for 5 mins."
-        }
+        "Breakfast": {"Meal": "Egg Bhurji", "Ingredients": ["2 eggs", "1 tbsp ghee", "1/2 tsp cumin"], "Recipe": "Scramble eggs with ghee and cumin."},
+        "Lunch": {"Meal": "Chicken Tikka with Cauliflower Rice", "Ingredients": ["Leftover chicken tikka", "1 cup cauliflower", "1 tbsp ghee"], "Recipe": "Reheat tikka, sauté cauliflower with ghee."},
+        "Dinner": {"Meal": "Butter Chicken with Rice", "Ingredients": ["200g chicken", "2 tbsp ghee", "1 cup cream", "1 cup rice"], "Recipe": "Cook chicken with ghee and cream, serve with rice."},
+        "Snack": {"Meal": "Roasted Almonds", "Ingredients": ["1 cup almonds", "1 tbsp ghee", "Salt"], "Recipe": "Roast in ghee with salt for 5 mins."}
     },
     "Sunday": {
-        "Breakfast": {
-            "Meal": "Chicken Masala Omelette",
-            "Ingredients": ["2 eggs", "100g chicken", "1 tbsp ghee", "1/2 tsp turmeric"],
-            "Recipe": "Mix eggs, chicken, spices, cook in ghee."
-        },
-        "Lunch": {
-            "Meal": "Mutton Rogan Josh with Roti",
-            "Ingredients": ["Leftover mutton rogan josh", "1 cup whole wheat flour", "1 tsp ghee"],
-            "Recipe": "Reheat mutton, make fresh roti."
-        },
-        "Dinner": {
-            "Meal": "Fish Tikka with Sautéed Spinach",
-            "Ingredients": ["200g fish", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"],
-            "Recipe": "Marinate fish, cook in ghee, sauté spinach."
-        },
-        "Snack": {
-            "Meal": "Tandoori Bites",
-            "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"],
-            "Recipe": "Reheat or eat cold."
-        }
+        "Breakfast": {"Meal": "Chicken Masala Omelette", "Ingredients": ["2 eggs", "100g chicken", "1 tbsp ghee", "1/2 tsp turmeric"], "Recipe": "Mix eggs, chicken, spices, cook in ghee."},
+        "Lunch": {"Meal": "Mutton Rogan Josh with Roti", "Ingredients": ["Leftover mutton rogan josh", "1 cup whole wheat flour", "1 tsp ghee"], "Recipe": "Reheat mutton, make fresh roti."},
+        "Dinner": {"Meal": "Fish Tikka with Sautéed Spinach", "Ingredients": ["200g fish", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"], "Recipe": "Marinate fish, cook in ghee, sauté spinach."},
+        "Snack": {"Meal": "Tandoori Bites", "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"], "Recipe": "Reheat or eat cold."}
     }
 }
 
@@ -438,8 +218,10 @@ def meals_page():
     
     meals = vegetarian_meals if diet == "Vegetarian" else meat_meals
     st.write(f"### Meal Plan for {day} ({diet})")
-    for meal_type, meal in meals[day].items():
-        st.write(f"**{meal_type}:** {meal}")
+    for meal_type, details in meals[day].items():
+        st.write(f"**{meal_type}:** {details['Meal']}")
+        st.write("**Ingredients:**", ", ".join(details['Ingredients']))
+        st.write("**Recipe:**", details['Recipe'])
 
 def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
@@ -483,37 +265,24 @@ def tracking_page():
     else:
         st.write("**BMI and Calories:** Enter and save personal info to calculate.")
 
-    # Weekly Tracking with Measurements
+    # Weekly Tracking
     st.write("### Weekly Updates")
     if st.button("Log Weekly Metrics"):
         col1, col2 = st.columns(2)
         with col1:
             weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=1, key="weekly_weight")
-            arms = st.number_input("Arms (cm)", min_value=1, max_value=100, value=0)
-            chest = st.number_input("Chest (cm)", min_value=1, max_value=200, value=0)
-            waist = st.number_input("Waist (cm)", min_value=1, max_value=200, value=0)
         with col2:
-            hips = st.number_input("Hips (cm)", min_value=1, max_value=200, value=0)
-            thighs = st.number_input("Thighs (cm)", min_value=1, max_value=100, value=0)
-            calves = st.number_input("Calves (cm)", min_value=1, max_value=100, value=0)
+            pass  # Measurements moved to daily section
         if st.button("Save Weekly Data"):
             date = datetime.now().strftime("%Y-%m-%d")
-            # Ensure weight_history is a list to avoid KeyError
             if not isinstance(st.session_state.user_data['weight_history'], list):
                 st.session_state.user_data['weight_history'] = []
             st.session_state.user_data['weight_history'].append((date, weight))
-            # Ensure body_measurements_history is a list
-            if not isinstance(st.session_state.user_data['body_measurements_history'], list):
-                st.session_state.user_data['body_measurements_history'] = []
-            st.session_state.user_data['body_measurements_history'].append({
-                'date': date,
-                'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
-            })
             st.success("Weekly data saved!")
 
-    # Daily Tracking
+    # Daily Tracking with Measurements
     st.write("### Daily Updates")
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns([2, 2, 1])  # Adjusted columns to accommodate measurements
     with col1:
         mood = st.slider("Mood (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['mood'],
                         help="1: Deflated, 5: Neutral, 10: Optimistic")
@@ -523,11 +292,24 @@ def tracking_page():
         sleep_hours = st.number_input("Hours of Sleep", 0.0, 24.0, st.session_state.user_data['daily_checklist']['sleep_hours'], 0.5)
         sleep_quality = st.slider("Sleep Quality (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['sleep_quality'],
                                  help="1: Poor, 10: Excellent")
+    with col3:
+        arms = st.number_input("Arms (cm)", min_value=0, max_value=100, value=st.session_state.user_data['daily_checklist']['arms'])
+        chest = st.number_input("Chest (cm)", min_value=0, max_value=200, value=st.session_state.user_data['daily_checklist']['chest'])
+        waist = st.number_input("Waist (cm)", min_value=0, max_value=200, value=st.session_state.user_data['daily_checklist']['waist'])
+        hips = st.number_input("Hips (cm)", min_value=0, max_value=200, value=st.session_state.user_data['daily_checklist']['hips'])
+        thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100, value=st.session_state.user_data['daily_checklist']['thighs'])
+        calves = st.number_input("Calves (cm)", min_value=0, max_value=100, value=st.session_state.user_data['daily_checklist']['calves'])
     if st.button("Save Daily Data"):
         st.session_state.user_data['daily_checklist']['mood'] = mood
         st.session_state.user_data['daily_checklist']['energy'] = energy
         st.session_state.user_data['daily_checklist']['sleep_hours'] = sleep_hours
         st.session_state.user_data['daily_checklist']['sleep_quality'] = sleep_quality
+        st.session_state.user_data['daily_checklist']['arms'] = arms
+        st.session_state.user_data['daily_checklist']['chest'] = chest
+        st.session_state.user_data['daily_checklist']['waist'] = waist
+        st.session_state.user_data['daily_checklist']['hips'] = hips
+        st.session_state.user_data['daily_checklist']['thighs'] = thighs
+        st.session_state.user_data['daily_checklist']['calves'] = calves
         st.session_state.user_data['daily_checklist']['date'] = datetime.now().strftime("%Y-%m-%d")
         st.session_state.user_data['mood_log'].append({
             'date': st.session_state.user_data['daily_checklist']['date'],
@@ -535,6 +317,10 @@ def tracking_page():
             'energy': energy,
             'sleep_hours': sleep_hours,
             'sleep_quality': sleep_quality
+        })
+        st.session_state.user_data['body_measurements_history'].append({
+            'date': st.session_state.user_data['daily_checklist']['date'],
+            'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
         })
         st.success("Daily data saved!")
 
@@ -587,15 +373,7 @@ def tracking_page():
                 composition_data['report_file'] = uploaded_file.name
             st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
             st.success("Body composition saved!")
-    ("""
-    #### Before Photo Guidelines
-    - Use **clear, natural lighting** that can be replicated for your "after" photo.
-    - Wear **tight-fitting clothing** you can wear again for consistency.
-    - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
-    #### Goal Photo Explanation
-    - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
-    - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
-    """)
+
     # Photo Upload Subsection with Instructions
     st.write("### Upload Progress Photos")
     col1, col2 = st.columns(2)
@@ -605,7 +383,15 @@ def tracking_page():
     with col2:
         back_photo = st.file_uploader("Back View Photo", type=['png', 'jpg', 'jpeg'], key="back")
         outfit_photo = st.file_uploader("Goal Outfit Photo", type=['png', 'jpg', 'jpeg'], key="outfit")
-    st.markdown
+    st.markdown("""
+    #### Before Photo Guidelines
+    - Use **clear, natural lighting** that can be replicated for your "after" photo.
+    - Wear **tight-fitting clothing** you can wear again for consistency.
+    - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
+    #### Goal Photo Explanation
+    - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
+    - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
+    """)
     if st.button("Save Progress Photos"):
         photos = {
             'date': datetime.now().strftime("%Y-%m-%d"),
@@ -629,7 +415,6 @@ def tracking_page():
         dates = [m['date'] for m in st.session_state.user_data['body_measurements_history'] if m['measurements'].get('waist')]
         if waists and dates:
             st.line_chart(pd.DataFrame({'Waist (cm)': waists}, index=dates))
-        # Add more charts for other measurements as needed (e.g., arms, chest)
     if st.session_state.user_data['mood_log']:
         moods = [m['mood'] for m in st.session_state.user_data['mood_log']]
         dates = [m['date'] for m in st.session_state.user_data['mood_log']]
