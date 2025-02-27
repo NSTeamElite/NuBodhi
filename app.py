@@ -404,7 +404,7 @@ meat_meals = {
 # Main app pages
 def welcome_page():
     st.markdown("<h1 style='text-align: center;'>🕉️ NuBodhi</h1>", unsafe_allow_html=True)
-    st.markdown("## Your Holistic Transformation Journey")
+    st.markdown("## Your Holistic Transformation Journey Begins Today")
     st.markdown("""
     Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
     guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
@@ -587,7 +587,15 @@ def tracking_page():
                 composition_data['report_file'] = uploaded_file.name
             st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
             st.success("Body composition saved!")
-
+    ("""
+    #### Before Photo Guidelines
+    - Use **clear, natural lighting** that can be replicated for your "after" photo.
+    - Wear **tight-fitting clothing** you can wear again for consistency.
+    - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
+    #### Goal Photo Explanation
+    - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
+    - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
+    """)
     # Photo Upload Subsection with Instructions
     st.write("### Upload Progress Photos")
     col1, col2 = st.columns(2)
@@ -597,15 +605,7 @@ def tracking_page():
     with col2:
         back_photo = st.file_uploader("Back View Photo", type=['png', 'jpg', 'jpeg'], key="back")
         outfit_photo = st.file_uploader("Goal Outfit Photo", type=['png', 'jpg', 'jpeg'], key="outfit")
-    st.markdown("""
-    #### Before Photo Guidelines
-    - Use **clear, natural lighting** that can be replicated for your "after" photo.
-    - Wear **tight-fitting clothing** you can wear again for consistency.
-    - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
-    #### Goal Photo Explanation
-    - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
-    - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
-    """)
+    st.markdown
     if st.button("Save Progress Photos"):
         photos = {
             'date': datetime.now().strftime("%Y-%m-%d"),
