@@ -474,17 +474,23 @@ def tracking_page():
     if st.button("Log Weekly Metrics"):
         col1, col2 = st.columns(2)
         with col1:
-            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, key="weekly_weight")
-            arms = st.number_input("Arms (cm)", min_value=0, max_value=100)
-            chest = st.number_input("Chest (cm)", min_value=0, max_value=200)
-            waist = st.number_input("Waist (cm)", min_value=0, max_value=200)
+            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=0, key="weekly_weight")
+            arms = st.number_input("Arms (cm)", min_value=0, max_value=100, value=0)
+            chest = st.number_input("Chest (cm)", min_value=0, max_value=200, value=0)
+            waist = st.number_input("Waist (cm)", min_value=0, max_value=200, value=0)
         with col2:
-            hips = st.number_input("Hips (cm)", min_value=0, max_value=200)
-            thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100)
-            calves = st.number_input("Calves (cm)", min_value=0, max_value=100)
+            hips = st.number_input("Hips (cm)", min_value=0, max_value=200, value=0)
+            thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100, value=0)
+            calves = st.number_input("Calves (cm)", min_value=0, max_value=100, value=0)
         if st.button("Save Weekly Data"):
             date = datetime.now().strftime("%Y-%m-%d")
+            # Ensure weight_history is a list to avoid KeyError
+            if not isinstance(st.session_state.user_data['weight_history'], list):
+                st.session_state.user_data['weight_history'] = []
             st.session_state.user_data['weight_history'].append((date, weight))
+            # Ensure body_measurements_history is a list
+            if not isinstance(st.session_state.user_data['body_measurements_history'], list):
+                st.session_state.user_data['body_measurements_history'] = []
             st.session_state.user_data['body_measurements_history'].append({
                 'date': date,
                 'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
@@ -605,9 +611,11 @@ def tracking_page():
         dates = [w[0] for w in st.session_state.user_data['weight_history']]
         st.line_chart(pd.DataFrame({'Weight (kg)': weights}, index=dates))
     if st.session_state.user_data['body_measurements_history']:
-        waists = [m['measurements']['waist'] for m in st.session_state.user_data['body_measurements_history']]
-        dates = [m['date'] for m in st.session_state.user_data['body_measurements_history']]
-        st.line_chart(pd.DataFrame({'Waist (cm)': waists}, index=dates))
+        waists = [m['measurements']['waist'] for m in st.session_state.user_data['body_measurements_history'] if m['measurements'].get('waist')]
+        dates = [m['date'] for m in st.session_state.user_data['body_measurements_history'] if m['measurements'].get('waist')]
+        if waists and dates:
+            st.line_chart(pd.DataFrame({'Waist (cm)': waists}, index=dates))
+        # Add more charts for other measurements as needed (e.g., arms, chest)
     if st.session_state.user_data['mood_log']:
         moods = [m['mood'] for m in st.session_state.user_data['mood_log']]
         dates = [m['date'] for m in st.session_state.user_data['mood_log']]
