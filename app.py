@@ -608,31 +608,40 @@ def tracking_page():
             dates = [m['date'] for m in st.session_state.user_data['mood_log']]
             st.line_chart(pd.DataFrame({'Mood (1-10)': moods}, index=dates))
 
-def reminders_page():
-    st.markdown("<h2 style='text-align: center;'>⏰ Reminders</h2>", unsafe_allow_html=True)
-    week = st.session_state.user_data['week_number']
-    if week == 4:
-        st.info("**Week 4 Wellspa Notice:** Check out this result after 4 weeks using Wellspa! It tightens skin and boosts TRME results—inside and out. Reach out to your guide for details!")
-    elif week == 6:
-        st.info("**Week 6 Wellspa Notice:** Week 6 update! Clients saw smoother skin and less cellulite with Wellspa and TRME. Ask your guide how to get started!")
-
-    if show_exercise_reminder():
-        st.warning("⚡ TIME FOR AN EXERCISE SNACK! ⚡", icon="🏃")
-        st.markdown("### Quick Exercise Break! Do 10 squats to boost your energy and metabolism! 💪")
-        if st.button("✅ I Did My Squats!"):
-            st.session_state.user_data['exercise_reminders']['completed_today'] += 1
-            st.session_state.user_data['daily_checklist']['items']['exercise_snack'] = True
-            st.balloons()
-            st.success("Amazing work! 🌟 Keep it up!")
-
-    if st.button("Advance Week (for testing)"):
-        st.session_state.user_data['week_number'] += 1
-        st.success(f"Advanced to Week {st.session_state.user_data['week_number']}!")
+def tips_help_page():
+    st.markdown("<h2 style='text-align: center;'>💡 Tips+Help</h2>", unsafe_allow_html=True)
+    st.write("### Useful Tips for Holistic Fat Loss and Body Transformation")
+    st.markdown("""
+    - **Prioritize Whole Foods:** Focus on unprocessed, nutrient-dense foods like vegetables, legumes, wild caught fish, lean meats and protein and vitamin rich eggs.  
+      *Tip:* Replace sugary snacks with nuts or seeds for sustained energy.
+    - **Incorporate Movement Daily:** Engage in short, frequent “Exercise Snacks” (e.g., 10 squats or a series of body weight exercises for 1-10 mins) to boost metabolism without overwhelming your schedule.  
+      *Tip:* 10 squats at random times throughout the day is as beneficial for your body as a 30-minute walk, despite taking a fraction of the time.
+    - **Optimize Sleep Quality:** Sleep is different for everyone, but in general aim for 6-8 hours of quality sleep nightly to regulate hormones like cortisol and ghrelin, which affect fat storage. The most important sleep time is the prior to midnight, so it is better to get to bed before 10pm and wake early, than go to bed late and wake late.  
+      *Tip:* Create a wind-down routine (e.g., no food or stimulants after 7pm and no screens 1 hour before bed - charging your phone in another room and reading a book in bed is useful for this winding down) to improve sleep depth.
+    - **Use Supplements Wisely:** Leverage TRME's epigenetically targeted supplements that support fat burning, muscle growth and controlling cravings and improving sleep.  
+      *Tip:* The supplements are designed to work together enhancing results, so stick with the complete program and set reminders to take the supplements in the morning.
+    - **Stay Hydrated:** As your fat cells break up, they release toxins they have been storing for years. To aid in speeding up the removal of these toxins from your body, drink 1-2 liters of water daily. If you love fizzy drinks, then I recommend replacing them with carbonated mineral water or coconut water to help wean yourself off the sugar addiction. Herbal and green teas are a great way to increase the amount of fluids you are getting daily. Though I would avoid adding milk to these.  
+      *Tip:* Add a slice of lemon or cucumber for flavor and added nutrients.
+    - **Practice Mindful Eating:** If you're eating quality nutrient dense real food then the portion sizes aren't going to be the biggest issue, as you will feel increasingly full with less food (thanks to TRME kicking in). However one of the easiest ways to decrease the amount of food you consume without noticing it, is to shrink the utensils you serve the food in, and don't watch TV, your phone or anything while eating. This will slow down your eating allowing your body time to let you know it's full. If you feel you could have another serving, wait 20minutes, and that is likely to pass.  
+      *Tip:* Use smaller plates and utensils to naturally portion control your meals.
+    - **Build Muscle with Resistance:** Bodyweight exercises (e.g., squats, push-ups), and using a small weight like a kettlebell or dumbbell of 1-2kg is the best way to increase muscle mass, boosting your metabolism and shaping your body. Focus on basic moves like squats as they target the largest muscles in the body, and have a flow on impact throughout the rest of your body.  
+      *Tip:* Start small with 5-10 squats a few times a day, and increase the number of reps/weight each week. Remember! The ultimate fat burning hack is having lots of muscle, as it burns calories while we're sitting and doing other things. So less focus on cardio, and more on resistance bodyweight training.
+    - **Manage Stress:** Reduce stress through gentle walks, yoga, meditation or breathing activities to lower cortisol levels, which can lead to fat retention, especially around the midsection.  
+      *Tip:* Try the simple 4 by 4 breathing exercise (breath in for 4 seconds, hold for 4 seconds, breathe out for 4 and hold for 4) daily to reset your mind.
+    - **Track Progress Holistically:** Monitor mood, energy and sleep daily, and metrics like weight and measurements weekly, and body composition, Biophotonic score, bloodwork and photos on a quarterly basis. This will allow you to track your transformation many different levels, to witness the holistic nature of realising the best you!  
+      *Tip:* Be as thorough as possible with your preliminary measurements, this is key to the NuBodhi program being a longterm transformation, rather than a traditional short term diet.
+    - **Consistency Over Perfection:** Focus on sustainable habits rather than strict diets—small, consistent changes lead to lasting results.  
+      *Tip:* Celebrate small wins (e.g., a week of healthy meals) to stay motivated, and put realise that one bad meal or bad day is not the end of the world, but it can be if you beat yourself up about it and never get back on track.
+    - **Incorporate Anti-Inflammatory Foods:** Add turmeric, ginger, and green tea to your diet to reduce inflammation, supporting fat loss and overall health.  
+      *Tip:* Make a warm turmeric and ginger tea with lemon and honey before bed.
+    - **Replace Processed Foods:** Seed oils and trans fats are highly processed, to the point where they cause more harm than good in your body. For this reason use natural good fats like Ghee, Coconut Oil, Olive Oil, grass fed Tallow and Butter, they are deeply beneficial and will assist with your body transformation. Do the same thing with artificial sugars, and fillers to prevent epigenetic disruption and fat gain, if you have a sweet tooth, use raw non heat treated honey as your tastebuds gradually change to no longer crave sweet things constantly.  
+      *Tip:* Read every label. If you don't know what is in it, do not eat it.
+    """)
 
 # Main app with navigation
 def main():
     st.sidebar.title("Navigation 📍")
-    page = st.sidebar.radio("Go to", ["Welcome", "Meals", "Tracking", "Reminders"])
+    page = st.sidebar.radio("Go to", ["Welcome", "Meals", "Tracking", "Tips+Help"])
 
     if page == "Welcome":
         welcome_page()
@@ -640,8 +649,8 @@ def main():
         meals_page()
     elif page == "Tracking":
         tracking_page()
-    elif page == "Reminders":
-        reminders_page()
+    elif page == "Tips+Help":
+        tips_help_page()
 
 if __name__ == "__main__":
     main()
