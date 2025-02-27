@@ -67,14 +67,24 @@ def show_exercise_reminder():
             return True
     return False
 
-# BMI and Calorie Calculation
+# ... (Keep existing imports and initialize_session_state function unchanged)
+
+# BMI and Calorie Calculation with Error Handling
 def calculate_bmi(weight, height):
-    return round((weight / ((height / 100) ** 2)), 2)
+    try:
+        return round((weight / ((height / 100) ** 2)), 2) if weight and height else 0
+    except ZeroDivisionError:
+        return 0
 
 def calculate_calories(age, gender, weight, height, activity_level):
-    bmr = 10 * weight + 6.25 * height - 5 * age + (5 if gender == "Male" else -161)
-    activity_multipliers = {"Sedentary": 1.2, "Lightly Active": 1.375, "Moderately Active": 1.55, "Very Active": 1.725}
-    return round(bmr * activity_multipliers[activity_level])
+    if not all([age, weight, height, gender, activity_level]):
+        return 0
+    try:
+        bmr = 10 * weight + 6.25 * height - 5 * age + (5 if gender == "Male" else -161)
+        activity_multipliers = {"Sedentary": 1.2, "Lightly Active": 1.375, "Moderately Active": 1.55, "Very Active": 1.725}
+        return round(bmr * activity_multipliers[activity_level])
+    except (ZeroDivisionError, KeyError):
+        return 0
 
 # Extended Meal Plans with No Links
 vegetarian_meals = {
@@ -429,10 +439,8 @@ def meals_page():
     
     meals = vegetarian_meals if diet == "Vegetarian" else meat_meals
     st.write(f"### Meal Plan for {day} ({diet})")
-    for meal_type, details in meals[day].items():
-        st.write(f"**{meal_type}:** {details['Meal']}")
-        st.write("**Ingredients:**", ", ".join(details['Ingredients']))
-        st.write("**Recipe:**", details['Recipe'])
+    for meal_type, meal in meals[day].items():
+        st.write(f"**{meal_type}:** {meal}")
 
 def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
@@ -464,16 +472,17 @@ def tracking_page():
         })
         st.success("Personal info saved!")
 
-    # BMI and Calorie Display
-    bmi = calculate_bmi(st.session_state.user_data['weight'], st.session_state.user_data['height'])
-    calories = calculate_calories(st.session_state.user_data['age'], st.session_state.user_data['gender'],
-                                 st.session_state.user_data['weight'], st.session_state.user_data['height'],
-                                 st.session_state.user_data.get('activity', 'Sedentary'))
-    if bmi and calories:
-        st.write(f"**BMI:** {bmi} | **Recommended Calories:** {calories} kcal/day")
-        calorie_range = st.slider("Adjust Calorie Intake", min_value=calories-500, max_value=calories+500, value=calories)
+    # BMI and Calorie Display (only after personal info is saved)
+    if all([st.session_state.user_data['age'], st.session_state.user_data['gender'], st.session_state.user_data['height'], st.session_state.user_data['weight'], st.session_state.user_data.get('activity')]):
+        bmi = calculate_bmi(st.session_state.user_data['weight'], st.session_state.user_data['height'])
+        calories = calculate_calories(st.session_state.user_data['age'], st.session_state.user_data['gender'],
+                                     st.session_state.user_data['weight'], st.session_state.user_data['height'],
+                                     st.session_state.user_data.get('activity', 'Sedentary'))
+        if bmi and calories:
+            st.write(f"**BMI:** {bmi} | **Recommended Calories:** {calories} kcal/day")
+            calorie_range = st.slider("Adjust Calorie Intake", min_value=calories-500, max_value=calories+500, value=calories)
     else:
-        st.write("**BMI and Calories:** Enter personal info to calculate.")
+        st.write("**BMI and Calories:** Enter and save personal info to calculate.")
 
     # Weekly Tracking with Measurements
     st.write("### Weekly Updates")
