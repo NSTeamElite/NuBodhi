@@ -403,9 +403,8 @@ meat_meals = {
 
 # Main app pages
 def welcome_page():
-    st.markdown("<h1 style='text-align: center;'>🕉️ Nu Bodhi</h1>", unsafe_allow_html=True)
-    st.image("https://unsplash.com/photos/a-table-topped-with-bowls-of-food-and-sauces-vsnAIYA9bms")  # No caption
-    st.markdown("## Welcome to NuBodhi - Your Holistic Transformation Journey! 🌟")
+    st.markdown("<h1 style='text-align: center;'>🕉️ NuBodhi</h1>", unsafe_allow_html=True)
+    st.markdown("## Your Holistic Transformation Journey")
     st.markdown("""
     Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
     guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
