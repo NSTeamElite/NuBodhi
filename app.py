@@ -438,8 +438,10 @@ def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
     st.write("### Enter or Update Your Personal Information")
 
-    # Ensure age is at least 18 during input rendering
+    # Set safe default values for number inputs
     default_age = st.session_state.user_data['age'] if st.session_state.user_data['age'] >= 18 else 18
+    default_height = st.session_state.user_data['height'] if st.session_state.user_data['height'] >= 100 else 100
+    default_weight = st.session_state.user_data['weight'] if st.session_state.user_data['weight'] >= 30 else 30
 
     col1, col2 = st.columns(2)
     with col1:
@@ -447,8 +449,8 @@ def tracking_page():
         age = st.number_input("Age", min_value=18, max_value=100, value=default_age)
     with col2:
         gender = st.selectbox("Gender", ["Male", "Female"], index=0 if st.session_state.user_data['gender'] == "Male" else 1 if st.session_state.user_data['gender'] == "Female" else 0)
-        height = st.number_input("Height (cm)", min_value=100, max_value=250, value=st.session_state.user_data['height'])
-        weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=st.session_state.user_data['weight'])
+        height = st.number_input("Height (cm)", min_value=100, max_value=250, value=default_height)
+        weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=default_weight)
     activity = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"],
                           index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(st.session_state.user_data.get('activity', 'Sedentary')))
     if st.button("Save Personal Info"):
