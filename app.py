@@ -437,10 +437,14 @@ def meals_page():
 def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
     st.write("### Enter or Update Your Personal Information")
+
+    # Ensure age is at least 18 during input rendering
+    default_age = st.session_state.user_data['age'] if st.session_state.user_data['age'] >= 18 else 18
+
     col1, col2 = st.columns(2)
     with col1:
         name = st.text_input("Name", st.session_state.user_data['name'])
-        age = st.number_input("Age", min_value=18, max_value=100, value=st.session_state.user_data['age'])
+        age = st.number_input("Age", min_value=18, max_value=100, value=default_age)
     with col2:
         gender = st.selectbox("Gender", ["Male", "Female"], index=0 if st.session_state.user_data['gender'] == "Male" else 1 if st.session_state.user_data['gender'] == "Female" else 0)
         height = st.number_input("Height (cm)", min_value=100, max_value=250, value=st.session_state.user_data['height'])
