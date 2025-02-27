@@ -294,11 +294,6 @@ def tracking_page():
             calorie_range = st.slider("Adjust Calorie Intake", min_value=calories-500, max_value=calories+500, value=calories)
     else:
         st.write("**BMI and Calories:** Enter and save personal info to calculate.")
-
-    # Weekly Tracking (simplified to weight only)
-    st.write("### Weekly Updates")
-    # Removed Log Weekly Metrics button and inputs since measurements are now daily
-
     # Daily Tracking with Measurements
     st.write("### Daily Updates")
     col1, col2, col3 = st.columns([2, 2, 1])  # Adjusted columns to accommodate measurements
