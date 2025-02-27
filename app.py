@@ -436,177 +436,182 @@ def meals_page():
 
 def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
-    if not st.session_state.user_data['name']:
-        st.write("### Enter Your Personal Information")
-        col1, col2 = st.columns(2)
-        with col1:
-            name = st.text_input("Name")
-            age = st.number_input("Age", min_value=18, max_value=100)
-        with col2:
-            gender = st.selectbox("Gender", ["Male", "Female"])
-            height = st.number_input("Height (cm)", min_value=100, max_value=250)
-            weight = st.number_input("Weight (kg)", min_value=30, max_value=200)
-        activity = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
-        if st.button("Save Personal Info"):
-            st.session_state.user_data.update({
-                'name': name,
-                'age': age,
-                'gender': gender,
-                'height': height,
-                'weight': weight
-            })
-            st.success("Personal info saved!")
-    else:
-        st.write(f"### Hi, {st.session_state.user_data['name']}! Track Your Progress")
-        bmi = calculate_bmi(st.session_state.user_data['weight'], st.session_state.user_data['height'])
-        calories = calculate_calories(st.session_state.user_data['age'], st.session_state.user_data['gender'], 
-                                     st.session_state.user_data['weight'], st.session_state.user_data['height'], 
-                                     st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"], key="activity"))
+    st.write("### Enter or Update Your Personal Information")
+    col1, col2 = st.columns(2)
+    with col1:
+        name = st.text_input("Name", st.session_state.user_data['name'])
+        age = st.number_input("Age", min_value=18, max_value=100, value=st.session_state.user_data['age'])
+    with col2:
+        gender = st.selectbox("Gender", ["Male", "Female"], index=0 if st.session_state.user_data['gender'] == "Male" else 1 if st.session_state.user_data['gender'] == "Female" else 0)
+        height = st.number_input("Height (cm)", min_value=100, max_value=250, value=st.session_state.user_data['height'])
+        weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=st.session_state.user_data['weight'])
+    activity = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"],
+                          index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(st.session_state.user_data.get('activity', 'Sedentary')))
+    if st.button("Save Personal Info"):
+        st.session_state.user_data.update({
+            'name': name,
+            'age': age,
+            'gender': gender,
+            'height': height,
+            'weight': weight,
+            'activity': activity
+        })
+        st.success("Personal info saved!")
+
+    # BMI and Calorie Display
+    bmi = calculate_bmi(st.session_state.user_data['weight'], st.session_state.user_data['height'])
+    calories = calculate_calories(st.session_state.user_data['age'], st.session_state.user_data['gender'],
+                                 st.session_state.user_data['weight'], st.session_state.user_data['height'],
+                                 st.session_state.user_data.get('activity', 'Sedentary'))
+    if bmi and calories:
         st.write(f"**BMI:** {bmi} | **Recommended Calories:** {calories} kcal/day")
         calorie_range = st.slider("Adjust Calorie Intake", min_value=calories-500, max_value=calories+500, value=calories)
+    else:
+        st.write("**BMI and Calories:** Enter personal info to calculate.")
 
-        # Weekly Tracking
-        if st.button("Log Weekly Metrics"):
-            col1, col2 = st.columns(2)
-            with col1:
-                weight = st.number_input("Weight (kg)", min_value=30, max_value=200, key="weekly_weight")
-                arms = st.number_input("Arms (cm)", min_value=0, max_value=100)
-                chest = st.number_input("Chest (cm)", min_value=0, max_value=200)
-                waist = st.number_input("Waist (cm)", min_value=0, max_value=200)
-            with col2:
-                hips = st.number_input("Hips (cm)", min_value=0, max_value=200)
-                thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100)
-                calves = st.number_input("Calves (cm)", min_value=0, max_value=100)
-            if st.button("Save Weekly Data"):
-                date = datetime.now().strftime("%Y-%m-%d")
-                st.session_state.user_data['weight_history'].append((date, weight))
-                st.session_state.user_data['body_measurements_history'].append({
-                    'date': date,
-                    'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
-                })
-                st.success("Weekly data saved!")
-
-        # Daily Tracking
-        st.write("### Daily Updates")
+    # Weekly Tracking with Measurements
+    st.write("### Weekly Updates")
+    if st.button("Log Weekly Metrics"):
         col1, col2 = st.columns(2)
         with col1:
-            mood = st.slider("Mood (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['mood'],
-                           help="1: Deflated, 5: Neutral, 10: Optimistic")
-            energy = st.slider("Energy (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['energy'],
-                             help="1: Exhausted, 10: Energetic")
+            weight = st.number_input("Weight (kg)", min_value=30, max_value=200, key="weekly_weight")
+            arms = st.number_input("Arms (cm)", min_value=0, max_value=100)
+            chest = st.number_input("Chest (cm)", min_value=0, max_value=200)
+            waist = st.number_input("Waist (cm)", min_value=0, max_value=200)
         with col2:
-            sleep_hours = st.number_input("Hours of Sleep", 0.0, 24.0, st.session_state.user_data['daily_checklist']['sleep_hours'], 0.5)
-            sleep_quality = st.slider("Sleep Quality (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['sleep_quality'],
-                                    help="1: Poor, 10: Excellent")
-        if st.button("Save Daily Data"):
-            st.session_state.user_data['daily_checklist']['mood'] = mood
-            st.session_state.user_data['daily_checklist']['energy'] = energy
-            st.session_state.user_data['daily_checklist']['sleep_hours'] = sleep_hours
-            st.session_state.user_data['daily_checklist']['sleep_quality'] = sleep_quality
-            st.session_state.user_data['daily_checklist']['date'] = datetime.now().strftime("%Y-%m-%d")
-            st.session_state.user_data['mood_log'].append({
-                'date': st.session_state.user_data['daily_checklist']['date'],
-                'mood': mood,
-                'energy': energy,
-                'sleep_hours': sleep_hours,
-                'sleep_quality': sleep_quality
+            hips = st.number_input("Hips (cm)", min_value=0, max_value=200)
+            thighs = st.number_input("Thighs (cm)", min_value=0, max_value=100)
+            calves = st.number_input("Calves (cm)", min_value=0, max_value=100)
+        if st.button("Save Weekly Data"):
+            date = datetime.now().strftime("%Y-%m-%d")
+            st.session_state.user_data['weight_history'].append((date, weight))
+            st.session_state.user_data['body_measurements_history'].append({
+                'date': date,
+                'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
             })
-            st.success("Daily data saved!")
+            st.success("Weekly data saved!")
 
-        # Biometric Data
-        st.write("### Biometric Data")
-        if st.button("Log Blood Work"):
-            uploaded_file = st.file_uploader("Upload Blood Work Photo (PNG/JPG/PDF)", type=['png', 'jpg', 'jpeg', 'pdf'], key="blood")
-            col1, col2 = st.columns(2)
-            with col1:
-                blood_pressure_sys = st.number_input("Blood Pressure (Systolic)", 0, 300)
-                blood_sugar = st.number_input("Blood Sugar (mg/dL)", 0, 500)
-            with col2:
-                hemoglobin = st.number_input("Hemoglobin (g/dL)", 0.0, 30.0)
-            if st.button("Save Blood Work"):
-                report_data = {
-                    'date': datetime.now().strftime("%Y-%m-%d"),
-                    'metrics': {
-                        'blood_pressure': f"{blood_pressure_sys}/",
-                        'blood_sugar': blood_sugar,
-                        'hemoglobin': hemoglobin
-                    }
-                }
-                if uploaded_file:
-                    report_data['report_file'] = uploaded_file.name
-                st.session_state.user_data['health_metrics']['blood_work'].append(report_data)
-                st.success("Blood work saved!")
+    # Daily Tracking
+    st.write("### Daily Updates")
+    col1, col2 = st.columns(2)
+    with col1:
+        mood = st.slider("Mood (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['mood'],
+                        help="1: Deflated, 5: Neutral, 10: Optimistic")
+        energy = st.slider("Energy (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['energy'],
+                          help="1: Exhausted, 10: Energetic")
+    with col2:
+        sleep_hours = st.number_input("Hours of Sleep", 0.0, 24.0, st.session_state.user_data['daily_checklist']['sleep_hours'], 0.5)
+        sleep_quality = st.slider("Sleep Quality (1-10)", 1, 10, st.session_state.user_data['daily_checklist']['sleep_quality'],
+                                 help="1: Poor, 10: Excellent")
+    if st.button("Save Daily Data"):
+        st.session_state.user_data['daily_checklist']['mood'] = mood
+        st.session_state.user_data['daily_checklist']['energy'] = energy
+        st.session_state.user_data['daily_checklist']['sleep_hours'] = sleep_hours
+        st.session_state.user_data['daily_checklist']['sleep_quality'] = sleep_quality
+        st.session_state.user_data['daily_checklist']['date'] = datetime.now().strftime("%Y-%m-%d")
+        st.session_state.user_data['mood_log'].append({
+            'date': st.session_state.user_data['daily_checklist']['date'],
+            'mood': mood,
+            'energy': energy,
+            'sleep_hours': sleep_hours,
+            'sleep_quality': sleep_quality
+        })
+        st.success("Daily data saved!")
 
-        if st.button("Log Biophotonic Scan"):
-            scan_score = st.number_input("Biophotonic Scan Score (10,000-100,000)", 10000, 100000)
-            if st.button("Save Scan Score"):
-                st.session_state.user_data['health_metrics']['biophotonic_scan'].append({
-                    'date': datetime.now().strftime("%Y-%m-%d"),
-                    'score': scan_score
-                })
-                st.success("Scan score saved!")
-
-        if st.button("Log Body Composition"):
-            uploaded_file = st.file_uploader("Upload Body Composition Results", type=['pdf'], key="composition")
-            col1, col2 = st.columns(2)
-            with col1:
-                body_fat = st.number_input("Body Fat %", 0.0, 100.0)
-            with col2:
-                muscle_mass = st.number_input("Muscle Mass (kg)", 0.0, 100.0)
-            if st.button("Save Body Composition"):
-                composition_data = {
-                    'date': datetime.now().strftime("%Y-%m-%d"),
-                    'metrics': {'body_fat': body_fat, 'muscle_mass': muscle_mass}
-                }
-                if uploaded_file:
-                    composition_data['report_file'] = uploaded_file.name
-                st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
-                st.success("Body composition saved!")
-
-        # Photo Upload Subsection with Instructions
-        st.write("### Upload Progress Photos")
-        st.markdown("""
-        #### Before Photo Guidelines
-        - Use **clear, natural lighting** that can be replicated for your "after" photo.
-        - Wear **tight-fitting clothing** you can wear again for consistency.
-        - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
-        #### Goal Photo Explanation
-        - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
-        - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
-        """)
+    # Biometric Data
+    st.write("### Biometric Data")
+    if st.button("Log Blood Work"):
+        uploaded_file = st.file_uploader("Upload Blood Work Photo (PNG/JPG/PDF)", type=['png', 'jpg', 'jpeg', 'pdf'], key="blood")
         col1, col2 = st.columns(2)
         with col1:
-            front_photo = st.file_uploader("Front View Photo", type=['png', 'jpg', 'jpeg'], key="front")
-            side_photo = st.file_uploader("Side View Photo", type=['png', 'jpg', 'jpeg'], key="side")
+            blood_pressure_sys = st.number_input("Blood Pressure (Systolic)", 0, 300)
+            blood_sugar = st.number_input("Blood Sugar (mg/dL)", 0, 500)
         with col2:
-            back_photo = st.file_uploader("Back View Photo", type=['png', 'jpg', 'jpeg'], key="back")
-            outfit_photo = st.file_uploader("Goal Outfit Photo", type=['png', 'jpg', 'jpeg'], key="outfit")
-        if st.button("Save Progress Photos"):
-            photos = {
+            hemoglobin = st.number_input("Hemoglobin (g/dL)", 0.0, 30.0)
+        if st.button("Save Blood Work"):
+            report_data = {
                 'date': datetime.now().strftime("%Y-%m-%d"),
-                'photos': {
-                    'front': front_photo.name if front_photo else None,
-                    'side': side_photo.name if side_photo else None,
-                    'back': back_photo.name if back_photo else None,
-                    'outfit': outfit_photo.name if outfit_photo else None
+                'metrics': {
+                    'blood_pressure': f"{blood_pressure_sys}/",
+                    'blood_sugar': blood_sugar,
+                    'hemoglobin': hemoglobin
                 }
             }
-            st.session_state.user_data['health_metrics']['progress_photos'].append(photos)
-            st.success("Progress photos saved!")
+            if uploaded_file:
+                report_data['report_file'] = uploaded_file.name
+            st.session_state.user_data['health_metrics']['blood_work'].append(report_data)
+            st.success("Blood work saved!")
 
-        # Visualize Progress
-        if st.session_state.user_data['weight_history']:
-            weights = [w[1] for w in st.session_state.user_data['weight_history']]
-            dates = [w[0] for w in st.session_state.user_data['weight_history']]
-            st.line_chart(pd.DataFrame({'Weight (kg)': weights}, index=dates))
-        if st.session_state.user_data['body_measurements_history']:
-            waists = [m['measurements']['waist'] for m in st.session_state.user_data['body_measurements_history']]
-            dates = [m['date'] for m in st.session_state.user_data['body_measurements_history']]
-            st.line_chart(pd.DataFrame({'Waist (cm)': waists}, index=dates))
-        if st.session_state.user_data['mood_log']:
-            moods = [m['mood'] for m in st.session_state.user_data['mood_log']]
-            dates = [m['date'] for m in st.session_state.user_data['mood_log']]
-            st.line_chart(pd.DataFrame({'Mood (1-10)': moods}, index=dates))
+    if st.button("Log Biophotonic Scan"):
+        scan_score = st.number_input("Biophotonic Scan Score (10,000-100,000)", 10000, 100000)
+        if st.button("Save Scan Score"):
+            st.session_state.user_data['health_metrics']['biophotonic_scan'].append({
+                'date': datetime.now().strftime("%Y-%m-%d"),
+                'score': scan_score
+            })
+            st.success("Scan score saved!")
+
+    if st.button("Log Body Composition"):
+        uploaded_file = st.file_uploader("Upload Body Composition Results", type=['pdf'], key="composition")
+        col1, col2 = st.columns(2)
+        with col1:
+            body_fat = st.number_input("Body Fat %", 0.0, 100.0)
+        with col2:
+            muscle_mass = st.number_input("Muscle Mass (kg)", 0.0, 100.0)
+        if st.button("Save Body Composition"):
+            composition_data = {
+                'date': datetime.now().strftime("%Y-%m-%d"),
+                'metrics': {'body_fat': body_fat, 'muscle_mass': muscle_mass}
+            }
+            if uploaded_file:
+                composition_data['report_file'] = uploaded_file.name
+            st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
+            st.success("Body composition saved!")
+
+    # Photo Upload Subsection with Instructions
+    st.write("### Upload Progress Photos")
+    col1, col2 = st.columns(2)
+    with col1:
+        front_photo = st.file_uploader("Front View Photo", type=['png', 'jpg', 'jpeg'], key="front")
+        side_photo = st.file_uploader("Side View Photo", type=['png', 'jpg', 'jpeg'], key="side")
+    with col2:
+        back_photo = st.file_uploader("Back View Photo", type=['png', 'jpg', 'jpeg'], key="back")
+        outfit_photo = st.file_uploader("Goal Outfit Photo", type=['png', 'jpg', 'jpeg'], key="outfit")
+    st.markdown("""
+    #### Before Photo Guidelines
+    - Use **clear, natural lighting** that can be replicated for your "after" photo.
+    - Wear **tight-fitting clothing** you can wear again for consistency.
+    - Maintain the **same pose** (e.g., standing straight, arms slightly away) for front, side, and back views.
+    #### Goal Photo Explanation
+    - Capture a photo wearing a **special outfit** that either fits poorly now or, if too small, hold it against yourself to demonstrate the current fit.
+    - The goal is to wear and fit well in this outfit in a few months for a powerful "after" photo.
+    """)
+    if st.button("Save Progress Photos"):
+        photos = {
+            'date': datetime.now().strftime("%Y-%m-%d"),
+            'photos': {
+                'front': front_photo.name if front_photo else None,
+                'side': side_photo.name if side_photo else None,
+                'back': back_photo.name if back_photo else None,
+                'outfit': outfit_photo.name if outfit_photo else None
+            }
+        }
+        st.session_state.user_data['health_metrics']['progress_photos'].append(photos)
+        st.success("Progress photos saved!")
+
+    # Visualize Progress
+    if st.session_state.user_data['weight_history']:
+        weights = [w[1] for w in st.session_state.user_data['weight_history']]
+        dates = [w[0] for w in st.session_state.user_data['weight_history']]
+        st.line_chart(pd.DataFrame({'Weight (kg)': weights}, index=dates))
+    if st.session_state.user_data['body_measurements_history']:
+        waists = [m['measurements']['waist'] for m in st.session_state.user_data['body_measurements_history']]
+        dates = [m['date'] for m in st.session_state.user_data['body_measurements_history']]
+        st.line_chart(pd.DataFrame({'Waist (cm)': waists}, index=dates))
+    if st.session_state.user_data['mood_log']:
+        moods = [m['mood'] for m in st.session_state.user_data['mood_log']]
+        dates = [m['date'] for m in st.session_state.user_data['mood_log']]
+        st.line_chart(pd.DataFrame({'Mood (1-10)': moods}, index=dates))
 
 def tips_help_page():
     st.markdown("<h2 style='text-align: center;'>💡 Tips+Help</h2>", unsafe_allow_html=True)
