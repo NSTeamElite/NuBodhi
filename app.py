@@ -218,7 +218,7 @@ def welcome_page():
     .logo-container {
         width: 100%;  /* Default to full width */
     }
-    @media (min-width: 500px) {
+    @media (min-width: 768px) {
         .logo-container img {
             width: 50% !important;  /* Shrink to 50% on desktop */
             margin: 0 auto;  /* Center the image */
