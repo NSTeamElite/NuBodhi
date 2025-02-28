@@ -23,6 +23,10 @@ def init_db():
 # Initialize session state
 def initialize_session_state():
     today = datetime.now().strftime("%Y-%m-%d")
+    conn = getattr(st.session_state, 'db_connection', None)
+    if conn is None:
+        st.session_state.db_connection = init_db()
+
     if 'user_data' not in st.session_state:
         st.session_state.user_data = {
             'user_id': '',
@@ -66,27 +70,82 @@ def initialize_session_state():
             },
             'week_number': 1
         }
-    conn = getattr(st.session_state, 'db_connection', None)
-    if conn is None:
-        st.session_state.db_connection = init_db()
 
 initialize_session_state()
 
 # Save data to database
 def save_to_db(user_id, data_type, date, value):
+    if not user_id:
+        return  # Skip saving if no user ID is provided
     conn = st.session_state.db_connection
     c = conn.cursor()
+    # Convert value to string for storage
     c.execute("INSERT INTO user_data (user_id, data_type, date, value) VALUES (?, ?, ?, ?)",
               (user_id, data_type, date, str(value)))
     conn.commit()
 
 # Load data from database
 def load_from_db(user_id, data_type):
+    if not user_id:
+        return []  # Return empty list if no user ID
     conn = st.session_state.db_connection
     c = conn.cursor()
     c.execute("SELECT date, value FROM user_data WHERE user_id = ? AND data_type = ? ORDER BY date",
               (user_id, data_type))
     return c.fetchall()
+
+# Load all user data from database
+def load_user_data(user_id):
+    if not user_id:
+        return
+
+    # Load personal info
+    personal_info = load_from_db(user_id, 'personal_info')
+    if personal_info:
+        latest_info = eval(personal_info[-1][1])  # Get the latest entry
+        st.session_state.user_data.update(latest_info)
+
+    # Load daily checklist (only the latest for current session)
+    daily_checklist = load_from_db(user_id, 'daily_checklist')
+    if daily_checklist and daily_checklist[-1][0] == datetime.now().strftime("%Y-%m-%d"):
+        st.session_state.user_data['daily_checklist'] = eval(daily_checklist[-1][1])
+
+    # Load historical data
+    mood_log = load_from_db(user_id, 'mood_log')
+    if mood_log:
+        st.session_state.user_data['mood_log'] = [
+            {'date': entry[0], **eval(entry[1])} for entry in mood_log
+        ]
+
+    body_measurements = load_from_db(user_id, 'body_measurements_history')
+    if body_measurements:
+        st.session_state.user_data['body_measurements_history'] = [
+            {'date': entry[0], 'measurements': eval(entry[1])} for entry in body_measurements
+        ]
+
+    biophotonic_scan = load_from_db(user_id, 'biophotonic_scan')
+    if biophotonic_scan:
+        st.session_state.user_data['health_metrics']['biophotonic_scan'] = [
+            {'date': entry[0], 'score': eval(entry[1])} for entry in biophotonic_scan
+        ]
+
+    blood_work = load_from_db(user_id, 'blood_work')
+    if blood_work:
+        st.session_state.user_data['health_metrics']['blood_work'] = [
+            {'date': entry[0], 'metrics': eval(entry[1]), 'report_file': eval(entry[1]).get('report_file')} for entry in blood_work
+        ]
+
+    body_composition = load_from_db(user_id, 'body_composition')
+    if body_composition:
+        st.session_state.user_data['health_metrics']['body_composition'] = [
+            {'date': entry[0], 'metrics': eval(entry[1]), 'report_file': eval(entry[1]).get('report_file')} for entry in body_composition
+        ]
+
+    progress_photos = load_from_db(user_id, 'progress_photos')
+    if progress_photos:
+        st.session_state.user_data['health_metrics']['progress_photos'] = [
+            {'date': entry[0], 'photos': eval(entry[1])} for entry in progress_photos
+        ]
 
 # Exercise reminder function
 def show_exercise_reminder():
@@ -273,6 +332,15 @@ def meals_page():
 
 def tracking_page():
     st.markdown("<h2 style='text-align: center;'>📊 Tracking</h2>", unsafe_allow_html=True)
+
+    # User ID prompt
+    st.write("### Enter Your User ID")
+    user_id = st.text_input("User ID", value=st.session_state.user_data['user_id'], key="user_id")
+    if user_id != st.session_state.user_data['user_id']:
+        # Update user ID and load data
+        st.session_state.user_data['user_id'] = user_id
+        load_user_data(user_id)
+
     st.write("### Enter or Update Your Personal Information")
 
     # Set safe default values for number inputs
@@ -292,6 +360,16 @@ def tracking_page():
                           index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(st.session_state.user_data.get('activity', 'Sedentary')))
     if st.button("Save Personal Info"):
         st.session_state.user_data.update({
+            'user_id': user_id,
+            'name': name,
+            'age': age,
+            'gender': gender,
+            'height': height,
+            'weight': weight,
+            'activity': activity
+        })
+        # Save personal info to database
+        save_to_db(user_id, 'personal_info', datetime.now().strftime("%Y-%m-%d"), {
             'name': name,
             'age': age,
             'gender': gender,
@@ -312,6 +390,7 @@ def tracking_page():
             calorie_range = st.slider("Adjust Calorie Intake", min_value=calories-500, max_value=calories+500, value=calories)
     else:
         st.write("**BMI and Calories:** Enter and save personal info to calculate.")
+
     # Daily Tracking with Measurements
     st.write("### Daily Updates")
     col1, col2, col3 = st.columns([2, 2, 1])  # Adjusted columns to accommodate measurements
@@ -354,6 +433,17 @@ def tracking_page():
             'date': st.session_state.user_data['daily_checklist']['date'],
             'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
         })
+        # Save daily data to database
+        save_to_db(user_id, 'daily_checklist', st.session_state.user_data['daily_checklist']['date'], st.session_state.user_data['daily_checklist'])
+        save_to_db(user_id, 'mood_log', st.session_state.user_data['daily_checklist']['date'], {
+            'mood': mood,
+            'energy': energy,
+            'sleep_hours': sleep_hours,
+            'sleep_quality': sleep_quality
+        })
+        save_to_db(user_id, 'body_measurements_history', st.session_state.user_data['daily_checklist']['date'], {
+            'measurements': {'arms': arms, 'chest': chest, 'waist': waist, 'hips': hips, 'thighs': thighs, 'calves': calves}
+        })
         st.success("Daily data saved!")
 
     # Biometric Data
@@ -378,15 +468,20 @@ def tracking_page():
             if uploaded_file:
                 report_data['report_file'] = uploaded_file.name
             st.session_state.user_data['health_metrics']['blood_work'].append(report_data)
+            # Save to database
+            save_to_db(user_id, 'blood_work', report_data['date'], report_data)
             st.success("Blood work saved!")
 
     if st.button("Log Biophotonic Scan"):
         scan_score = st.number_input("Biophotonic Scan Score (10,000-100,000)", 10000, 100000)
         if st.button("Save Scan Score"):
-            st.session_state.user_data['health_metrics']['biophotonic_scan'].append({
+            scan_data = {
                 'date': datetime.now().strftime("%Y-%m-%d"),
                 'score': scan_score
-            })
+            }
+            st.session_state.user_data['health_metrics']['biophotonic_scan'].append(scan_data)
+            # Save to database
+            save_to_db(user_id, 'biophotonic_scan', scan_data['date'], scan_score)
             st.success("Scan score saved!")
 
     if st.button("Log Body Composition"):
@@ -404,6 +499,8 @@ def tracking_page():
             if uploaded_file:
                 composition_data['report_file'] = uploaded_file.name
             st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
+            # Save to database
+            save_to_db(user_id, 'body_composition', composition_data['date'], composition_data)
             st.success("Body composition saved!")
 
     # Photo Upload Subsection with Instructions
@@ -435,6 +532,8 @@ def tracking_page():
             }
         }
         st.session_state.user_data['health_metrics']['progress_photos'].append(photos)
+        # Save to database
+        save_to_db(user_id, 'progress_photos', photos['date'], photos)
         st.success("Progress photos saved!")
 
     # Visualize Progress
