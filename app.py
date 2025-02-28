@@ -104,11 +104,51 @@ def load_user_data(user_id):
     if not user_id:
         return
 
+    # Reset session state to defaults before loading new user data
+    today = datetime.now().strftime("%Y-%m-%d")
+    st.session_state.user_data.update({
+        'user_id': user_id,
+        'name': '',
+        'age': 0,
+        'gender': '',
+        'height': 0,
+        'weight': 0,
+        'weight_history': [],
+        'body_measurements_history': [],
+        'mood_log': [],
+        'health_metrics': {
+            'biophotonic_scan': [],
+            'blood_work': [],
+            'body_composition': [],
+            'progress_photos': []
+        },
+        'daily_checklist': {
+            'date': today,
+            'items': {
+                'trme_supplements': False,
+                'exercise_snack': False,
+                'healthy_drinks': False,
+                'no_processed_food': False
+            },
+            'mood': 5,
+            'energy': 5,
+            'sleep_hours': 7.0,
+            'sleep_quality': 5,
+            'arms': 0,
+            'chest': 0,
+            'waist': 0,
+            'hips': 0,
+            'thighs': 0,
+            'calves': 0
+        }
+    })
+
     # Load personal info
     personal_info = load_from_db(user_id, 'personal_info')
     if personal_info:
         latest_info = eval(personal_info[-1][1])  # Get the latest entry
         st.session_state.user_data.update(latest_info)
+        st.session_state.user_data['user_id'] = user_id  # Ensure user_id is updated
 
     # Load daily checklist (only the latest for current session)
     daily_checklist = load_from_db(user_id, 'daily_checklist')
@@ -270,7 +310,7 @@ meat_meals = {
     "Sunday": {
         "Breakfast": {"Meal": "Chicken Masala Omelette", "Ingredients": ["2 eggs", "100g chicken", "1 tbsp ghee", "1/2 tsp turmeric"], "Recipe": "Mix eggs, chicken, spices, cook in ghee."},
         "Lunch": {"Meal": "Mutton Rogan Josh with Roti", "Ingredients": ["Leftover mutton rogan josh", "1 cup whole wheat flour", "1 tsp ghee"], "Recipe": "Reheat mutton, make fresh roti."},
-        "Dinner": {"Meal": "Fish Tikka with Sautéed Spinach", "Ingredients": ["200g fish", "1 tbsp yogurt", "2 tbsp ghee", "2 cups spinach"], "Recipe": "Marinate fish, cook in ghee, sauté spinach."},
+        "Dinner": {"Meal": "Fish Tikka with Sautéed Spinach", "Ingredients": ["200g fish", "1 tbsp yogurt", "1 tbsp ghee", "2 cups spinach"], "Recipe": "Marinate fish, cook in ghee, sauté spinach."},
         "Snack": {"Meal": "Tandoori Bites", "Ingredients": ["Leftover tandoori chicken", "1 tbsp ghee"], "Recipe": "Reheat or eat cold."}
     }
 }
@@ -340,11 +380,16 @@ def tracking_page():
 
     # User ID prompt
     st.write("### Enter Your User ID")
-    user_id = st.text_input("User ID", value=st.session_state.user_data['user_id'], key="user_id")
-    if user_id != st.session_state.user_data['user_id']:
+    user_id = st.text_input("User ID", value=st.session_state.user_data['user_id'], key="user_id_input")
+    if user_id and user_id != st.session_state.user_data['user_id']:
         # Update user ID and load data
         st.session_state.user_data['user_id'] = user_id
         load_user_data(user_id)
+        st.experimental_rerun()  # Rerun the app to refresh the form with loaded data
+    if st.session_state.user_data['name']:
+        st.write(f"Data loaded for user ID: {user_id}")
+    else:
+        st.write("Enter your user ID to load your data or start fresh.")
 
     st.write("### Enter or Update Your Personal Information")
 
@@ -355,16 +400,16 @@ def tracking_page():
 
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("Name", st.session_state.user_data['name'])
-        age = st.number_input("Age", min_value=18, max_value=100, value=default_age)
+        name = st.text_input("Name", st.session_state.user_data['name'], key="name_input")
+        age = st.number_input("Age", min_value=18, max_value=100, value=default_age, key="age_input")
     with col2:
-        gender = st.selectbox("Gender", ["Male", "Female"], index=0 if st.session_state.user_data['gender'] == "Male" else 1 if st.session_state.user_data['gender'] == "Female" else 0)
-        height = st.number_input("Height (cm)", min_value=100, max_value=250, value=default_height)
-        weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=default_weight)
+        gender = st.selectbox("Gender", ["Male", "Female"], index=0 if st.session_state.user_data['gender'] == "Male" else 1 if st.session_state.user_data['gender'] == "Female" else 0, key="gender_input")
+        height = st.number_input("Height (cm)", min_value=100, max_value=250, value=default_height, key="height_input")
+        weight = st.number_input("Weight (kg)", min_value=30, max_value=200, value=default_weight, key="weight_input")
     activity = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"],
-                          index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(st.session_state.user_data.get('activity', 'Sedentary')))
+                          index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(st.session_state.user_data.get('activity', 'Sedentary')), key="activity_input")
     if st.button("Save Personal Info"):
-        st.session_state.user_data.update({
+        updated_data = {
             'user_id': user_id,
             'name': name,
             'age': age,
@@ -372,16 +417,10 @@ def tracking_page():
             'height': height,
             'weight': weight,
             'activity': activity
-        })
+        }
+        st.session_state.user_data.update(updated_data)
         # Save personal info to database
-        save_to_db(user_id, 'personal_info', datetime.now().strftime("%Y-%m-%d"), {
-            'name': name,
-            'age': age,
-            'gender': gender,
-            'height': height,
-            'weight': weight,
-            'activity': activity
-        })
+        save_to_db(user_id, 'personal_info', datetime.now().strftime("%Y-%m-%d"), updated_data)
         st.success("Personal info saved!")
 
     # BMI and Calorie Display (only after personal info is saved)
@@ -660,39 +699,6 @@ def tips_help_page():
 
 # Main app with navigation
 def main():
-    # Custom CSS and JavaScript to enhance sidebar toggle visibility on mobile
-    st.markdown("""
-    <style>
-    @media (max-width: 768px) {
-        .custom-sidebar-toggle {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 9999;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        /* Hide Streamlit's default toggle button if possible */
-        .stApp > header > .css-1avcm0n {
-            display: none;
-        }
-    }
-    </style>
-    <div class="custom-sidebar-toggle" onclick="toggleSidebar()">☰ Menu</div>
-    <script>
-    function toggleSidebar() {
-        const sidebarToggle = document.querySelector('.stApp > header > .css-1avcm0n');
-        if (sidebarToggle) {
-            sidebarToggle.click();
-        }
-    }
-    </script>
-    """, unsafe_allow_html=True)
-
     st.sidebar.title("Navigation 📍")
     page = st.sidebar.radio("Go to", ["Welcome", "Tracking", "Useful Tips", "Meals"])
 
