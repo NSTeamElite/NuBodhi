@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import random
 import sqlite3
+import os
 
 # Page configuration
 st.set_page_config(
@@ -10,6 +11,10 @@ st.set_page_config(
     page_icon="🧘‍♀️",
     layout="wide"
 )
+
+# Create uploads directory if it doesn't exist
+if not os.path.exists("uploads"):
+    os.makedirs("uploads")
 
 # Initialize database connection
 def init_db():
@@ -466,7 +471,11 @@ def tracking_page():
                 }
             }
             if uploaded_file:
-                report_data['report_file'] = uploaded_file.name
+                # Save the file to the uploads folder
+                file_path = os.path.join("uploads", f"{user_id}_{uploaded_file.name}")
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                report_data['report_file'] = file_path
             st.session_state.user_data['health_metrics']['blood_work'].append(report_data)
             # Save to database
             save_to_db(user_id, 'blood_work', report_data['date'], report_data)
@@ -497,7 +506,11 @@ def tracking_page():
                 'metrics': {'body_fat': body_fat, 'muscle_mass': muscle_mass}
             }
             if uploaded_file:
-                composition_data['report_file'] = uploaded_file.name
+                # Save the file to the uploads folder
+                file_path = os.path.join("uploads", f"{user_id}_{uploaded_file.name}")
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                composition_data['report_file'] = file_path
             st.session_state.user_data['health_metrics']['body_composition'].append(composition_data)
             # Save to database
             save_to_db(user_id, 'body_composition', composition_data['date'], composition_data)
@@ -524,17 +537,46 @@ def tracking_page():
     if st.button("Save Progress Photos"):
         photos = {
             'date': datetime.now().strftime("%Y-%m-%d"),
-            'photos': {
-                'front': front_photo.name if front_photo else None,
-                'side': side_photo.name if side_photo else None,
-                'back': back_photo.name if back_photo else None,
-                'outfit': outfit_photo.name if outfit_photo else None
-            }
+            'photos': {}
         }
+        # Save each uploaded image to the uploads folder
+        for photo_type, photo in [
+            ('front', front_photo),
+            ('side', side_photo),
+            ('back', back_photo),
+            ('outfit', outfit_photo)
+        ]:
+            if photo:
+                file_path = os.path.join("uploads", f"{user_id}_{photo_type}_{photo.name}")
+                with open(file_path, "wb") as f:
+                    f.write(photo.getbuffer())
+                photos['photos'][photo_type] = file_path
+            else:
+                photos['photos'][photo_type] = None
         st.session_state.user_data['health_metrics']['progress_photos'].append(photos)
         # Save to database
         save_to_db(user_id, 'progress_photos', photos['date'], photos)
         st.success("Progress photos saved!")
+
+    # Display previously uploaded progress photos
+    st.write("### View Previous Progress Photos")
+    if st.session_state.user_data['health_metrics']['progress_photos']:
+        for photo_entry in st.session_state.user_data['health_metrics']['progress_photos']:
+            st.write(f"**Date:** {photo_entry['date']}")
+            col1, col2 = st.columns(2)
+            with col1:
+                if photo_entry['photos'].get('front') and os.path.exists(photo_entry['photos']['front']):
+                    st.image(photo_entry['photos']['front'], caption="Front View", width=200)
+                if photo_entry['photos'].get('side') and os.path.exists(photo_entry['photos']['side']):
+                    st.image(photo_entry['photos']['side'], caption="Side View", width=200)
+            with col2:
+                if photo_entry['photos'].get('back') and os.path.exists(photo_entry['photos']['back']):
+                    st.image(photo_entry['photos']['back'], caption="Back View", width=200)
+                if photo_entry['photos'].get('outfit') and os.path.exists(photo_entry['photos']['outfit']):
+                    st.image(photo_entry['photos']['outfit'], caption="Goal Outfit", width=200)
+            st.markdown("---")
+    else:
+        st.write("No progress photos uploaded yet.")
 
     # Visualize Progress
     if st.session_state.user_data['weight_history']:
@@ -618,6 +660,39 @@ def tips_help_page():
 
 # Main app with navigation
 def main():
+    # Custom CSS and JavaScript to enhance sidebar toggle visibility on mobile
+    st.markdown("""
+    <style>
+    @media (max-width: 768px) {
+        .custom-sidebar-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        /* Hide Streamlit's default toggle button if possible */
+        .stApp > header > .css-1avcm0n {
+            display: none;
+        }
+    }
+    </style>
+    <div class="custom-sidebar-toggle" onclick="toggleSidebar()">☰ Menu</div>
+    <script>
+    function toggleSidebar() {
+        const sidebarToggle = document.querySelector('.stApp > header > .css-1avcm0n');
+        if (sidebarToggle) {
+            sidebarToggle.click();
+        }
+    }
+    </script>
+    """, unsafe_allow_html=True)
+
     st.sidebar.title("Navigation 📍")
     page = st.sidebar.radio("Go to", ["Welcome", "Tracking", "Useful Tips", "Meals"])
 
