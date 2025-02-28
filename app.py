@@ -212,8 +212,27 @@ meat_meals = {
 }
 
 def welcome_page():
-    # Display the NuBodhi logo at 50% of the page width (approx. 500px for a 1000px page)
-    st.image("assets/NuBodhilogo.png", width=500)
+    # Custom CSS to shrink the logo by 50% on desktop while keeping it full-width on mobile
+    st.markdown("""
+    <style>
+    .logo-container {
+        width: 100%;  /* Default to full width */
+    }
+    @media (min-width: 500px) {
+        .logo-container img {
+            width: 50% !important;  /* Shrink to 50% on desktop */
+            margin: 0 auto;  /* Center the image */
+            display: block;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Display the NuBodhi logo inside a div with the custom class
+    st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+    st.image("assets/NuBodhilogo.png", use_column_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown("""
     Welcome to NuBodhi, where we use the best of nature and science to:
     - Reset your gene expression
