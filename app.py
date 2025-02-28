@@ -212,8 +212,8 @@ meat_meals = {
 }
 
 def welcome_page():
-    # Display the NuBodhi logo instead of the heading
-    st.image("assets/NuBodhilogo.png", use_column_width=True)
+    # Display the NuBodhi logo at 50% of the page width (approx. 500px for a 1000px page)
+    st.image("assets/NuBodhilogo.png", width=500)
     st.markdown("""
     Welcome to NuBodhi, where we use the best of nature and science to:
     - Reset your gene expression
