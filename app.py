@@ -213,7 +213,7 @@ meat_meals = {
 
 def welcome_page():
     # Display the NuBodhi logo instead of the heading
-    st.image("main/nubodhilogo.png", use_column_width=True)
+    st.image("nubodhilogo.png", use_column_width=True)
     st.markdown("""
     Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
     guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
