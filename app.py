@@ -211,23 +211,22 @@ meat_meals = {
     }
 }
 
-# Main app pages
 def welcome_page():
-    st.markdown("<h1 style='text-align: center;'>🕉️ NuBodhi</h1>", unsafe_allow_html=True)
-    st.markdown("## Your Transformation Journey Begins Today")
+    # Display the NuBodhi logo instead of the heading
+    st.image("main/nubodhilogo.png", use_column_width=True)
     st.markdown("""
+    Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
+    guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
+    skipping sleep, and never tracking your progress.
+
+    If that's the recipe for weight gain (along with a dramatically shortened and painful life), then we're here to do the exact opposite!
+
     Welcome to NuBodhi, where we use the best of nature and science to:
     - Reset your gene expression
     - Crush cravings
     - Boost energy
     - Burn fat
     - Build muscle
-    
-    Imagine the fastest way to gain weight: eating junk processed foods full of fake sugars, trans fats, and weird fillers, 
-    guzzling sugary drinks, eating too much every time (especially when stressed or bored), not drinking much water, barely moving, 
-    skipping sleep, and never tracking your progress.
-
-    If that's the recipe for weight gain (along with a dramatically shortened and painful life), then we're here to do the exact opposite!
 
     This is less about weight loss, and more about a holistic transformation into the best version of yourself.
 
